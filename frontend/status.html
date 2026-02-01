@@ -91,7 +91,7 @@
         }
 
         @keyframes cometPass {
-            0% {
+            0% { 
                 right: -10%;
                 top: 10%;
                 opacity: 0;
@@ -105,7 +105,7 @@
                 opacity: 1;
             }
 
-            100% {
+            100% { 
                 right: 110%;
                 top: 80%;
                 opacity: 0;
@@ -215,7 +215,7 @@
                 transform: scale(1);
             }
 
-            50% {
+            50% { 
                 box-shadow: 0 0 40px rgba(59, 130, 246, 1);
                 transform: scale(1.15);
             }
@@ -242,7 +242,7 @@
                 transform: scale(0.8);
             }
 
-            50% {
+            50% { 
                 opacity: 1;
                 transform: scale(1);
             }
@@ -521,18 +521,111 @@
         </div>
 
         <template id="application-template">
-            <div class="status-card">
-                <div class="application-header">
-                    <div class="job-info">
+        <div class="status-card">
+            <div class="application-header">
+                <div class="job-info">
                         <h2 class="app-job-title">Job Title</h2>
                         <p class="app-id">Application ID: #...</p>
                         <p class="app-date">Submitted: ...</p>
                     </div>
                     <div class="status-badge">Status</div>
                 </div>
-                <div class="tracking-timeline">
+            <div class="tracking-timeline">
                     <!-- Timeline items will be injected here -->
                 </div>
+
+                <!-- Rejection Notice (hidden by default) -->
+                <div class="rejection-notice" style="display: none; margin-top: 1.5rem; padding: 1.25rem; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 0.75rem;">
+                    <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                        <div style="width: 40px; height: 40px; background: rgba(239, 68, 68, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" width="20" height="20">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                <line x1="9" y1="9" x2="15" y2="15"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; color: #ef4444; margin-bottom: 0.5rem;">Application Not Selected</div>
+                            <p style="font-size: 0.9rem; color: #fca5a5; line-height: 1.6; margin: 0;">
+                                Thank you for your interest in SPACE42. Unfortunately, we've decided to move forward with other candidates for this position. 
+                                We encourage you to apply for other openings that match your skills.
+                            </p>
+                            <a href="jobs.html" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem; color: #60a5fa; text-decoration: none; font-size: 0.9rem;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                    <rect x="2" y="7" width="20" height="14" rx="2"/>
+                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                                </svg>
+                                View Other Positions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interview Section (hidden by default) -->
+                <div class="interview-section" style="display: none; margin-top: 1.5rem; padding: 1.25rem; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 0.75rem;">
+                    <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                        <div style="width: 40px; height: 40px; background: rgba(34, 197, 94, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" width="20" height="20">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; color: #22c55e; margin-bottom: 0.5rem;">Interview Scheduled</div>
+                            <div class="interview-details" style="font-size: 0.9rem; color: #d1d5db; line-height: 1.6;">
+                                <p class="interview-date" style="margin: 0 0 0.25rem;">📅 <span>Date & Time TBD</span></p>
+                                <p class="interview-type" style="margin: 0 0 0.25rem;">📹 <span>Video Interview</span></p>
+                                <p class="interview-with" style="margin: 0;">👤 <span>With: HR Team</span></p>
+                            </div>
+                            <div style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                                <a href="#" class="interview-link" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.4); color: #22c55e; text-decoration: none; border-radius: 0.5rem; font-size: 0.85rem;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                        <path d="M15 10l5 5-5 5"/>
+                                        <path d="M4 4v7a4 4 0 0 0 4 4h12"/>
+                                    </svg>
+                                    Join Interview
+                                </a>
+                                <button class="add-to-calendar-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #9ca3af; border-radius: 0.5rem; font-size: 0.85rem; cursor: pointer;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                        <line x1="16" y1="2" x2="16" y2="6"/>
+                                        <line x1="8" y1="2" x2="8" y2="6"/>
+                                        <line x1="3" y1="10" x2="21" y2="10"/>
+                                        <line x1="12" y1="14" x2="12" y2="18"/>
+                                        <line x1="10" y1="16" x2="14" y2="16"/>
+                                    </svg>
+                                    Add to Calendar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Behavioral Assessment Section -->
+                <div class="assessment-section" style="margin-top: 1.5rem; padding: 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 0.75rem;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #8b5cf6, #6366f1); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="20" height="20">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="assessment-title" style="font-weight: 600; color: #a78bfa;">Behavioral Assessment</div>
+                                <div class="assessment-status-text" style="font-size: 0.85rem; color: #9ca3af;">Not started</div>
+                            </div>
+                        </div>
+                        <a href="#" class="take-assessment-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; text-decoration: none; border-radius: 0.5rem; font-size: 0.9rem; font-weight: 500; transition: all 0.3s;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                <polygon points="5 3 19 12 5 21 5 3"/>
+                            </svg>
+                            Take Assessment
+                        </a>
+                    </div>
+                </div>
+
                 <!-- Withdraw Button -->
                 <div
                     style="text-align: right; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
@@ -543,7 +636,7 @@
                         style="margin-left: 10px; color: #3b82f6; background: none; border: 1px solid rgba(59, 130, 246, 0.3); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s;">Contact
                         Recruiter</button>
                 </div>
-            </div>
+                        </div>
         </template>
 
 
@@ -571,18 +664,20 @@
                 <div class="orion-msg bot">Hi! I'm Orion. Ask me anything about your application status.</div>
             </div>
             <div class="orion-chat-input-area">
-                <input type="text" class="orion-chat-input" id="orionChatInput" placeholder="Ask Orion..."
+                <input type="text" class="orion-chat-input" id="orionChatInput" placeholder="Type or click mic to speak..."
                     autocomplete="off">
-            </div>
+                <!-- Voice button will be added by voice-chat.js -->
         </div>
+    </div>
 
         <script src="api.js"></script>
-        <script>
+        <script src="voice-chat.js"></script>
+    <script>
             sessionStorage.setItem('returningUser', '1');
 
-            // Check if user is logged in
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            if (!isLoggedIn) {
+        // Check if user is logged in
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        if (!isLoggedIn) {
                 window.location.href = 'jobs.html'; // Redirect to jobs where login lives
             }
 
@@ -598,38 +693,60 @@
             document.getElementById('orionChatToggle').onclick = () => document.getElementById('orionChatPanel').classList.toggle('open');
             document.getElementById('orionChatClose').onclick = () => document.getElementById('orionChatPanel').classList.remove('open');
 
+            // Initialize Voice Chat
+            let voiceChat = null;
+            if (typeof initVoiceChatWidget === 'function') {
+                voiceChat = initVoiceChatWidget('orionChatInput', 'orionChatMessages', {
+                    apiKey: 'VF.DM.697f067be3fe14c39580e132.p8qmZZk2CHACMe7v',
+                    projectId: '697ec5f2f3b8565c0e66aac3'
+                });
+            }
+
+            // Send message function (used by both text and voice)
+            async function sendChatMessage() {
+                const input = document.getElementById('orionChatInput');
+                const t = input.value.trim();
+                if (!t) return;
+                
+                const msgs = document.getElementById('orionChatMessages');
+                // Add User Message
+                const u = document.createElement('div'); u.className = 'orion-msg user'; u.textContent = t; msgs.appendChild(u);
+                input.value = '';
+                msgs.scrollTop = msgs.scrollHeight;
+
+                // Add Loading/Bot Message
+                try {
+                    const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "..."; msgs.appendChild(r);
+                    msgs.scrollTop = msgs.scrollHeight;
+
+                    const resp = await api.chat(t, currentConversationId);
+                    currentConversationId = resp.conversation_id;
+                    r.textContent = resp.response;
+                    
+                    // Add speak button and auto-speak if voice mode
+                    if (typeof addSpeakButton === 'function') {
+                        addSpeakButton(r, resp.response);
+                    }
+                    if (voiceChat && voiceChat.isListening === false) {
+                        voiceChat.speak(resp.response);
+                    }
+                } catch (err) {
+                    const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "I'm having trouble connecting right now."; msgs.appendChild(r);
+                }
+                msgs.scrollTop = msgs.scrollHeight;
+            }
+
             document.getElementById('orionChatInput').onkeypress = async (e) => {
                 if (e.key === 'Enter') {
-                    const input = document.getElementById('orionChatInput');
-                    const t = input.value.trim();
-                    if (t) {
-                        const msgs = document.getElementById('orionChatMessages');
-                        // Add User Message
-                        const u = document.createElement('div'); u.className = 'orion-msg user'; u.textContent = t; msgs.appendChild(u);
-                        input.value = '';
-                        msgs.scrollTop = msgs.scrollHeight;
-
-                        // Add Loading/Bot Message
-                        try {
-                            const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "..."; msgs.appendChild(r);
-                            msgs.scrollTop = msgs.scrollHeight;
-
-                            const resp = await api.chat(t, currentConversationId);
-                            currentConversationId = resp.conversation_id;
-                            r.textContent = resp.response;
-                        } catch (err) {
-                            const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "I'm having trouble connecting right now."; msgs.appendChild(r);
-                        }
-                        msgs.scrollTop = msgs.scrollHeight;
-                    }
+                    sendChatMessage();
                 }
             };
 
-            // Display user email
-            const userEmail = localStorage.getItem('userEmail');
-            if (userEmail) {
-                document.getElementById('user-email').textContent = userEmail;
-            }
+        // Display user email
+        const userEmail = localStorage.getItem('userEmail');
+        if (userEmail) {
+            document.getElementById('user-email').textContent = userEmail;
+        }
 
             async function withdrawApplication(appId) {
                 if (confirm('Are you sure you want to withdraw your application? This cannot be undone.')) {
@@ -738,6 +855,85 @@
                             timelineContainer.appendChild(item);
                         });
 
+                        // Handle Rejection Notice
+                        const rejectionNotice = clone.querySelector('.rejection-notice');
+                        if (app.status.toLowerCase() === 'rejected') {
+                            rejectionNotice.style.display = 'block';
+                        }
+
+                        // Handle Interview Section
+                        const interviewSection = clone.querySelector('.interview-section');
+                        if (app.status.toLowerCase().includes('interview') || app.interview_scheduled_at) {
+                            interviewSection.style.display = 'block';
+                            
+                            // Populate interview details if available
+                            if (app.interview_scheduled_at) {
+                                const interviewDate = new Date(app.interview_scheduled_at);
+                                clone.querySelector('.interview-date span').textContent = 
+                                    interviewDate.toLocaleString('en-US', { 
+                                        weekday: 'long', 
+                                        year: 'numeric', 
+                                        month: 'long', 
+                                        day: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    });
+                            }
+                            if (app.interview_type) {
+                                clone.querySelector('.interview-type span').textContent = app.interview_type;
+                            }
+                            if (app.interview_with) {
+                                clone.querySelector('.interview-with span').textContent = 'With: ' + app.interview_with;
+                            }
+                            if (app.interview_link) {
+                                clone.querySelector('.interview-link').href = app.interview_link;
+                            } else {
+                                clone.querySelector('.interview-link').style.display = 'none';
+                            }
+                            
+                            // Add to calendar functionality
+                            clone.querySelector('.add-to-calendar-btn').onclick = () => {
+                                const title = encodeURIComponent(`SPACE42 Interview - ${app.job_title}`);
+                                const details = encodeURIComponent(`Interview for ${app.job_title} position at SPACE42`);
+                                const startDate = app.interview_scheduled_at ? new Date(app.interview_scheduled_at) : new Date();
+                                const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hour
+                                const start = startDate.toISOString().replace(/-|:|\.\d+/g, '');
+                                const end = endDate.toISOString().replace(/-|:|\.\d+/g, '');
+                                const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&dates=${start}/${end}`;
+                                window.open(url, '_blank');
+                            };
+                        }
+
+                        // Handle Behavioral Assessment Section
+                        const assessmentSection = clone.querySelector('.assessment-section');
+                        const assessmentTitle = clone.querySelector('.assessment-title');
+                        const assessmentStatusText = clone.querySelector('.assessment-status-text');
+                        const takeAssessmentBtn = clone.querySelector('.take-assessment-btn');
+
+                        if (app.behavioral_score !== null && app.behavioral_score !== undefined) {
+                            // Assessment completed
+                            assessmentStatusText.textContent = 'Completed ✓';
+                            assessmentStatusText.style.color = '#22c55e';
+                            takeAssessmentBtn.textContent = 'Completed';
+                            takeAssessmentBtn.style.background = 'rgba(34, 197, 94, 0.2)';
+                            takeAssessmentBtn.style.color = '#22c55e';
+                            takeAssessmentBtn.style.cursor = 'default';
+                            takeAssessmentBtn.removeAttribute('href');
+                            takeAssessmentBtn.innerHTML = `
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                    <polyline points="22 4 12 14.01 9 11.01"/>
+                                </svg>
+                                Completed
+                            `;
+                        } else if (['rejected', 'withdrawn'].includes(app.status.toLowerCase())) {
+                            // Application closed - hide assessment
+                            assessmentSection.style.display = 'none';
+                        } else {
+                            // Assessment not done - show button
+                            takeAssessmentBtn.href = `assessment.html?applicationId=${app.id}`;
+                        }
+
                         container.appendChild(clone);
                     });
 
@@ -762,7 +958,7 @@
                     speed: 1
                 });
             });
-        </script>
+    </script>
 </body>
 
 </html>

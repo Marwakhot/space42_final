@@ -294,8 +294,61 @@ class APIClient {
         });
     }
 
+    async scheduleInterview(applicationId, scheduledAt, interviewType, interviewer, meetingLink = null) {
+        return await this.request(`/applications/${applicationId}/schedule-interview`, {
+            method: 'POST',
+            requireAuth: true,
+            body: JSON.stringify({
+                scheduled_at: scheduledAt,
+                interview_type: interviewType,
+                interviewer: interviewer,
+                meeting_link: meetingLink
+            }),
+        });
+    }
+
     async getJobRankings(jobId) {
         return await this.request(`/applications/job/${jobId}/rankings`, {
+            requireAuth: true,
+        });
+    }
+
+    // ============ HR Feedback / Notes ============
+
+    async createFeedback(applicationId, feedbackData) {
+        return await this.request('/feedback', {
+            method: 'POST',
+            requireAuth: true,
+            body: JSON.stringify({
+                application_id: applicationId,
+                ...feedbackData
+            }),
+        });
+    }
+
+    async getApplicationFeedback(applicationId) {
+        return await this.request(`/feedback/application/${applicationId}`, {
+            requireAuth: true,
+        });
+    }
+
+    async updateFeedback(feedbackId, feedbackData) {
+        return await this.request(`/feedback/${feedbackId}`, {
+            method: 'PUT',
+            requireAuth: true,
+            body: JSON.stringify(feedbackData),
+        });
+    }
+
+    async deleteFeedback(feedbackId) {
+        return await this.request(`/feedback/${feedbackId}`, {
+            method: 'DELETE',
+            requireAuth: true,
+        });
+    }
+
+    async getFeedbackSummary(applicationId) {
+        return await this.request(`/feedback/application/${applicationId}/summary`, {
             requireAuth: true,
         });
     }

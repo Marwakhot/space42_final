@@ -894,13 +894,14 @@
             <div class="orion-msg bot">Hi! I'm Orion, your AI assistant. Ask me anything about onboarding, SPACE42, or
                 your first week.</div>
         </div>
-        <div class="orion-chat-input-area">
-            <input type="text" class="orion-chat-input" id="orionChatInput" placeholder="Ask Orion a question..."
-                autocomplete="off">
+        <div class="orion-chat-input-area" style="display: flex; gap: 0.5rem; align-items: center;">
+            <input type="text" class="orion-chat-input" id="orionChatInput" placeholder="Type or click mic to speak..."
+                autocomplete="off" style="flex: 1;">
         </div>
     </div>
 
     <script src="api.js"></script>
+    <script src="voice-chat.js"></script>
     <script>
         sessionStorage.setItem('returningUser', '1');
 
@@ -988,12 +989,31 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function addBotMessage(text) {
+        // Initialize Voice Chat
+        let voiceChat = null;
+        if (typeof initVoiceChatWidget === 'function') {
+            voiceChat = initVoiceChatWidget('orionChatInput', 'orionChatMessages', {
+                apiKey: 'VF.DM.697f067be3fe14c39580e132.p8qmZZk2CHACMe7v',
+                projectId: '697ec5f2f3b8565c0e66aac3'
+            });
+        }
+
+        function addBotMessage(text, speak = true) {
             const msg = document.createElement('div');
             msg.className = 'orion-msg bot';
             msg.textContent = text;
             chatMessages.appendChild(msg);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Add speak button
+            if (typeof addSpeakButton === 'function') {
+                addSpeakButton(msg, text);
+            }
+            
+            // Auto-speak
+            if (speak && voiceChat) {
+                voiceChat.speak(text);
+            }
         }
 
         chatToggle.addEventListener('click', toggleChat);
@@ -1016,6 +1036,14 @@
                     const resp = await api.onboardingChat(question, currentConversationId);
                     currentConversationId = resp.conversation_id;
                     loadingMsg.textContent = resp.response;
+                    
+                    // Add speak button and auto-speak
+                    if (typeof addSpeakButton === 'function') {
+                        addSpeakButton(loadingMsg, resp.response);
+                    }
+                    if (voiceChat) {
+                        voiceChat.speak(resp.response);
+                    }
                 } catch (error) {
                     loadingMsg.textContent = "I'm having trouble connecting to the onboarding database.";
                     console.error(error);

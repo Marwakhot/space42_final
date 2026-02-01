@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Job - SPACE42</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0f0f1a 100%);
+            min-height: 100vh;
+            color: #f3f4f6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #60a5fa;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #93c5fd;
+        }
+
+        .back-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: #9ca3af;
+            margin-bottom: 2rem;
+        }
+
+        /* Job Preview Card */
+        .job-preview {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .job-preview-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .job-preview-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .job-preview-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: white;
+        }
+
+        .job-preview-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #f3f4f6;
+        }
+
+        .job-preview-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        .job-preview-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .job-description {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #d1d5db;
+            line-height: 1.6;
+        }
+
+        /* Form Styles */
+        .application-form {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-section-title svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
+        .form-group label .required {
+            color: #ef4444;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.5rem;
+            color: #f3f4f6;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .form-control::placeholder {
+            color: #6b7280;
+        }
+
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.2rem;
+            padding-right: 3rem;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            border: 2px dashed rgba(59, 130, 246, 0.4);
+            border-radius: 0.75rem;
+            background: rgba(15, 23, 42, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-icon {
+            width: 48px;
+            height: 48px;
+            stroke: #60a5fa;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-text {
+            color: #9ca3af;
+            text-align: center;
+        }
+
+        .file-upload-text strong {
+            color: #60a5fa;
+        }
+
+        .file-selected {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            color: #4ade80;
+        }
+
+        .file-selected svg {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .file-selected .file-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-selected .remove-file {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .cv-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cv-info svg {
+            width: 24px;
+            height: 24px;
+            stroke: #60a5fa;
+            flex-shrink: 0;
+        }
+
+        .cv-info-text {
+            flex: 1;
+        }
+
+        .cv-info-title {
+            font-weight: 600;
+            color: #60a5fa;
+        }
+
+        .cv-info-desc {
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Existing CVs */
+        .existing-cvs {
+            margin-bottom: 1rem;
+        }
+
+        .existing-cvs-label {
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cv-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cv-option:hover {
+            border-color: #3b82f6;
+        }
+
+        .cv-option.selected {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .cv-option input[type="radio"] {
+            accent-color: #3b82f6;
+            width: 18px;
+            height: 18px;
+        }
+
+        .cv-option-info {
+            flex: 1;
+        }
+
+        .cv-option-name {
+            font-weight: 500;
+            color: #f3f4f6;
+        }
+
+        .cv-option-status {
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+
+        .cv-option-badge {
+            padding: 0.25rem 0.5rem;
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .submit-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(59, 130, 246, 0.2);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error State */
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            color: #fca5a5;
+            margin-bottom: 1rem;
+        }
+
+        /* Success Message */
+        .success-container {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            stroke: #4ade80;
+            margin-bottom: 1.5rem;
+        }
+
+        .success-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #4ade80;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-text {
+            color: #9ca3af;
+            margin-bottom: 2rem;
+        }
+
+        .success-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            color: #60a5fa;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Login Required */
+        .login-required {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .login-required-icon {
+            width: 60px;
+            height: 60px;
+            stroke: #f59e0b;
+            margin-bottom: 1rem;
+        }
+
+        .login-required-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #f3f4f6;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-required-text {
+            color: #9ca3af;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+
+            .job-preview-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .application-form {
+                padding: 1.5rem;
+            }
+
+            .success-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="jobs.html" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Jobs
+        </a>
+
+        <div id="content">
+            <!-- Loading State -->
+            <div id="loadingState" class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading job details...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        // Get job ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const jobId = urlParams.get('jobId');
+        const jobTitle = urlParams.get('title') || 'Job Position';
+
+        let currentJob = null;
+        let userCVs = [];
+        let selectedCVId = null;
+        let uploadedFile = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!jobId) {
+                showError('No job specified. Please go back and select a job to apply for.');
+                return;
+            }
+
+            // Check if logged in
+            if (!api || !api.token) {
+                showLoginRequired();
+                return;
+            }
+
+            try {
+                // Load job details
+                const jobs = await api.getJobs();
+                currentJob = jobs.find(j => j.id === jobId);
+
+                if (!currentJob) {
+                    showError('Job not found. It may have been removed or is no longer accepting applications.');
+                    return;
+                }
+
+                // Load user's CVs
+                try {
+                    userCVs = await api.getMyCVs();
+                } catch (e) {
+                    console.log('No CVs found:', e);
+                    userCVs = [];
+                }
+
+                // Render the form
+                renderApplicationForm();
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('Failed to load job details. Please try again.');
+            }
+        });
+
+        function showError(message) {
+            document.getElementById('content').innerHTML = `
+                <div class="error-message">
+                    <strong>Error:</strong> ${message}
+                </div>
+                <a href="jobs.html" class="btn btn-secondary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Jobs
+                </a>
+            `;
+        }
+
+        function showLoginRequired() {
+            document.getElementById('content').innerHTML = `
+                <div class="login-required">
+                    <svg class="login-required-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 8v4M12 16h.01"/>
+                    </svg>
+                    <h2 class="login-required-title">Login Required</h2>
+                    <p class="login-required-text">You need to be logged in to apply for jobs.</p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <a href="index.html?redirect=apply&jobId=${jobId}" class="btn btn-primary">
+                            Login to Apply
+                        </a>
+                        <a href="jobs.html" class="btn btn-secondary">
+                            Back to Jobs
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderApplicationForm() {
+            const content = document.getElementById('content');
+            
+            content.innerHTML = `
+                <h1 class="page-title">Apply for Position</h1>
+                <p class="page-subtitle">Complete the form below to submit your application</p>
+
+                <!-- Job Preview -->
+                <div class="job-preview">
+                    <div class="job-preview-header">
+                        <div class="job-preview-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="job-preview-title">${currentJob.title}</h2>
+                            <div class="job-preview-meta">
+                                ${currentJob.department ? `<span>🏢 ${currentJob.department}</span>` : ''}
+                                ${currentJob.location ? `<span>📍 ${currentJob.location}</span>` : ''}
+                                ${currentJob.work_type ? `<span>💼 ${currentJob.work_type}</span>` : ''}
+                                ${currentJob.salary_max ? `<span>💰 ${currentJob.currency || 'AED'} ${currentJob.salary_max}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    ${currentJob.description ? `<div class="job-description">${currentJob.description.substring(0, 300)}${currentJob.description.length > 300 ? '...' : ''}</div>` : ''}
+                </div>
+
+                <!-- Application Form -->
+                <form id="applicationForm" class="application-form">
+                    <!-- CV Section -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                            Your CV / Resume
+                        </h3>
+
+                        <div class="cv-info">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                            <div class="cv-info-text">
+                                <div class="cv-info-title">CV Required</div>
+                                <div class="cv-info-desc">Upload your CV/Resume to apply. It will be automatically analyzed for skill matching.</div>
+                            </div>
+                        </div>
+
+                        ${userCVs.length > 0 ? `
+                            <div class="existing-cvs">
+                                <p class="existing-cvs-label">Select from your existing CVs:</p>
+                                ${userCVs.map(cv => `
+                                    <label class="cv-option ${cv.is_primary ? 'selected' : ''}" data-cv-id="${cv.id}">
+                                        <input type="radio" name="cv_selection" value="${cv.id}" ${cv.is_primary ? 'checked' : ''}>
+                                        <div class="cv-option-info">
+                                            <div class="cv-option-name">${cv.file_name}</div>
+                                            <div class="cv-option-status">Uploaded ${new Date(cv.created_at).toLocaleDateString()}</div>
+                                        </div>
+                                        ${cv.is_primary ? '<span class="cv-option-badge">Primary</span>' : ''}
+                                    </label>
+                                `).join('')}
+                            </div>
+                            <div class="divider">or upload a new CV</div>
+                        ` : ''}
+
+                        <div class="file-upload" id="fileUploadArea">
+                            <input type="file" id="cvFile" accept=".pdf,.doc,.docx">
+                            <svg class="file-upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <div class="file-upload-text">
+                                <strong>Click to upload</strong> or drag and drop<br>
+                                PDF, DOC, DOCX (Max 10MB)
+                            </div>
+                        </div>
+                        <div id="fileSelected" class="file-selected" style="display: none;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                            <span class="file-name" id="fileName"></span>
+                            <button type="button" class="remove-file" onclick="removeFile()">✕</button>
+                        </div>
+                    </div>
+
+                    <!-- Cover Letter Section -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                            Cover Letter (Optional)
+                        </h3>
+
+                        <div class="form-group">
+                            <label for="coverLetter">Tell us why you're a great fit for this role</label>
+                            <textarea 
+                                id="coverLetter" 
+                                class="form-control" 
+                                placeholder="Share your motivation, relevant experience, and why you're interested in this position..."
+                                rows="6"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"/>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        </svg>
+                        Submit Application
+                    </button>
+                </form>
+            `;
+
+            // Set up event listeners
+            setupEventListeners();
+        }
+
+        function setupEventListeners() {
+            // CV selection
+            document.querySelectorAll('input[name="cv_selection"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    selectedCVId = e.target.value;
+                    uploadedFile = null;
+                    document.getElementById('cvFile').value = '';
+                    document.getElementById('fileSelected').style.display = 'none';
+                    
+                    // Update selected styling
+                    document.querySelectorAll('.cv-option').forEach(opt => opt.classList.remove('selected'));
+                    e.target.closest('.cv-option').classList.add('selected');
+                });
+            });
+
+            // File upload
+            const fileInput = document.getElementById('cvFile');
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    uploadedFile = e.target.files[0];
+                    selectedCVId = null;
+                    
+                    // Show selected file
+                    document.getElementById('fileName').textContent = uploadedFile.name;
+                    document.getElementById('fileSelected').style.display = 'flex';
+                    
+                    // Deselect existing CVs
+                    document.querySelectorAll('input[name="cv_selection"]').forEach(radio => {
+                        radio.checked = false;
+                    });
+                    document.querySelectorAll('.cv-option').forEach(opt => opt.classList.remove('selected'));
+                }
+            });
+
+            // Drag and drop
+            const uploadArea = document.getElementById('fileUploadArea');
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#3b82f6';
+                uploadArea.style.background = 'rgba(59, 130, 246, 0.1)';
+            });
+
+            uploadArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '';
+                uploadArea.style.background = '';
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '';
+                uploadArea.style.background = '';
+                
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    fileInput.files = e.dataTransfer.files;
+                    fileInput.dispatchEvent(new Event('change'));
+                }
+            });
+
+            // Set initial selected CV
+            const checkedRadio = document.querySelector('input[name="cv_selection"]:checked');
+            if (checkedRadio) {
+                selectedCVId = checkedRadio.value;
+            }
+
+            // Form submission
+            document.getElementById('applicationForm').addEventListener('submit', handleSubmit);
+        }
+
+        function removeFile() {
+            uploadedFile = null;
+            document.getElementById('cvFile').value = '';
+            document.getElementById('fileSelected').style.display = 'none';
+            
+            // Re-select primary CV if available
+            const primaryCV = userCVs.find(cv => cv.is_primary);
+            if (primaryCV) {
+                const radio = document.querySelector(`input[name="cv_selection"][value="${primaryCV.id}"]`);
+                if (radio) {
+                    radio.checked = true;
+                    selectedCVId = primaryCV.id;
+                    radio.closest('.cv-option').classList.add('selected');
+                }
+            }
+        }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const errorDiv = document.getElementById('errorMessage');
+            const coverLetter = document.getElementById('coverLetter').value.trim();
+
+            // Validate CV
+            if (!selectedCVId && !uploadedFile) {
+                errorDiv.textContent = 'Please select an existing CV or upload a new one.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            errorDiv.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <div class="loading-spinner" style="width: 24px; height: 24px; margin: 0;"></div>
+                Processing...
+            `;
+
+            try {
+                let cvId = selectedCVId;
+
+                // Upload new CV if needed
+                if (uploadedFile) {
+                    submitBtn.innerHTML = `
+                        <div class="loading-spinner" style="width: 24px; height: 24px; margin: 0;"></div>
+                        Uploading CV...
+                    `;
+
+                    const cvResponse = await api.uploadCV(uploadedFile, userCVs.length === 0);
+                    cvId = cvResponse.id;
+                }
+
+                // Submit application
+                submitBtn.innerHTML = `
+                    <div class="loading-spinner" style="width: 24px; height: 24px; margin: 0;"></div>
+                    Submitting Application...
+                `;
+
+                const applicationResult = await api.createApplication(currentJob.id, cvId, coverLetter || null);
+
+                // Show success with option to take behavioral test
+                showSuccess(applicationResult.id);
+
+            } catch (error) {
+                console.error('Application error:', error);
+                errorDiv.textContent = error.message || 'Failed to submit application. Please try again.';
+                errorDiv.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                    Submit Application
+                `;
+            }
+        }
+
+        function showSuccess(applicationId) {
+            document.getElementById('content').innerHTML = `
+                <div class="success-container">
+                    <svg class="success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <h2 class="success-title">Application Submitted!</h2>
+                    <p class="success-text">
+                        Your application for <strong>${currentJob.title}</strong> has been successfully submitted.<br>
+                        Complete the behavioral assessment to strengthen your application!
+                    </p>
+                    
+                    <!-- Behavioral Test CTA -->
+                    <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #8b5cf6, #6366f1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="24" height="24">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                </svg>
+                            </div>
+                            <div style="text-align: left;">
+                                <h3 style="color: #a78bfa; font-size: 1.1rem; margin-bottom: 0.25rem;">Behavioral Assessment</h3>
+                                <p style="color: #9ca3af; font-size: 0.875rem;">~10 mins • 5 questions • AI-powered</p>
+                            </div>
+                        </div>
+                        <p style="color: #d1d5db; font-size: 0.9rem; margin-bottom: 1rem; text-align: left;">
+                            Take a quick behavioral assessment to help us understand your work style and strengths. This significantly improves your chances!
+                        </p>
+                        <a href="assessment.html?applicationId=${applicationId}" class="btn btn-primary" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #8b5cf6, #6366f1);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            Take Assessment Now
+                        </a>
+                    </div>
+                    
+                    <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">
+                        Or take it later from your applications page
+                    </p>
+                    
+                    <div class="success-actions">
+                        <a href="status.html" class="btn btn-secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                            View My Applications
+                        </a>
+                        <a href="jobs.html" class="btn btn-secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                            </svg>
+                            Browse More Jobs
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

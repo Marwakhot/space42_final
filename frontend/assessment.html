@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behavioral Assessment - SPACE42</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0f0f1a 100%);
+            min-height: 100vh;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #a78bfa;
+        }
+
+        .job-badge {
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            color: #a78bfa;
+        }
+
+        /* Main Interview Area */
+        .interview-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 2rem;
+            overflow: hidden;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            padding: 1rem 1.5rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-bar-container {
+            flex: 1;
+            margin: 0 1.5rem;
+            height: 6px;
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 3px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+
+        /* Orb Interview Area */
+        .orb-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            min-height: 400px;
+        }
+
+        /* The Speaking Orb */
+        .orion-orb {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #8b5cf6 100%);
+            box-shadow: 
+                0 0 60px rgba(139, 92, 246, 0.4),
+                inset 0 0 60px rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .orion-orb::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            filter: blur(20px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .orion-orb::after {
+            content: '';
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            animation: orbit-ring 8s linear infinite;
+        }
+
+        @keyframes orbit-ring {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .orion-orb.speaking {
+            animation: orb-speaking 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes orb-speaking {
+            0% { 
+                transform: scale(1); 
+                box-shadow: 0 0 60px rgba(139, 92, 246, 0.4), inset 0 0 60px rgba(255, 255, 255, 0.1);
+            }
+            100% { 
+                transform: scale(1.08); 
+                box-shadow: 0 0 100px rgba(139, 92, 246, 0.7), inset 0 0 80px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        .orion-orb.listening {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #f87171 100%);
+            animation: orb-listening 1s ease-in-out infinite;
+        }
+
+        @keyframes orb-listening {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 0 60px rgba(239, 68, 68, 0.4);
+            }
+            50% { 
+                transform: scale(1.1); 
+                box-shadow: 0 0 120px rgba(239, 68, 68, 0.7);
+            }
+        }
+
+        .orion-orb svg {
+            width: 60px;
+            height: 60px;
+            stroke: white;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        /* Orb Label */
+        .orb-label {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #a78bfa, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Question Display */
+        .question-bubble {
+            max-width: 700px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1.5rem;
+            padding: 1.5rem 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: #e5e7eb;
+            position: relative;
+        }
+
+        .question-bubble::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid rgba(139, 92, 246, 0.3);
+        }
+
+        /* Stop Speaking Button */
+        .stop-speaking-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .stop-speaking-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .stop-speaking-btn svg {
+            width: 28px;
+            height: 28px;
+            stroke: white;
+        }
+
+        .stop-speaking-btn.visible {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Response Area */
+        .response-section {
+            padding: 1.5rem;
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid rgba(139, 92, 246, 0.15);
+        }
+
+        .response-mode-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .mode-btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mode-btn.text-mode {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #60a5fa;
+        }
+
+        .mode-btn.voice-mode {
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: #a78bfa;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border-color: transparent;
+            color: white;
+        }
+
+        .mode-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Text Input */
+        .text-input-area {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-end;
+        }
+
+        .text-input-area.hidden {
+            display: none;
+        }
+
+        .text-input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1rem;
+            color: #f3f4f6;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: none;
+            min-height: 56px;
+            max-height: 150px;
+            transition: all 0.3s;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        .text-input::placeholder {
+            color: #6b7280;
+        }
+
+        .send-btn {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border: none;
+            border-radius: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .send-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: white;
+        }
+
+        /* Voice Input */
+        .voice-input-area {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .voice-input-area.active {
+            display: flex;
+        }
+
+        .voice-transcript {
+            width: 100%;
+            min-height: 60px;
+            padding: 1rem;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 1rem;
+            color: #d1d5db;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .voice-transcript.listening {
+            border-color: #ef4444;
+        }
+
+        .voice-transcript-label {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-bottom: 0.25rem;
+        }
+
+        .voice-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .voice-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .voice-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .voice-btn.record {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border: none;
+            color: white;
+        }
+
+        .voice-btn.record.recording {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            animation: pulse-btn 1s infinite;
+        }
+
+        @keyframes pulse-btn {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+        }
+
+        .voice-btn.submit {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #22c55e;
+        }
+
+        .voice-btn.submit:hover {
+            background: rgba(34, 197, 94, 0.25);
+        }
+
+        /* Conversation History */
+        .conversation-history {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .conversation-history.visible {
+            display: block;
+        }
+
+        .history-item {
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .history-item.ai {
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 3px solid #8b5cf6;
+        }
+
+        .history-item.user {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid #3b82f6;
+        }
+
+        .history-item .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #9ca3af;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Intro Screen */
+        .intro-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .intro-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #a78bfa, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .intro-text {
+            color: #9ca3af;
+            max-width: 500px;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .start-btn {
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border: none;
+            border-radius: 2rem;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Completion Screen */
+        .completion-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .completion-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .completion-icon svg {
+            width: 50px;
+            height: 50px;
+            stroke: white;
+        }
+
+        .completion-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #22c55e;
+            margin-bottom: 1rem;
+        }
+
+        .completion-text {
+            color: #9ca3af;
+            max-width: 500px;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            color: #a78bfa;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        /* Loading */
+        .loading {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(139, 92, 246, 0.2);
+            border-top-color: #8b5cf6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error */
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            color: #fca5a5;
+            margin: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .orion-orb {
+                width: 140px;
+                height: 140px;
+            }
+
+            .orion-orb svg {
+                width: 45px;
+                height: 45px;
+            }
+
+            .question-bubble {
+                font-size: 1rem;
+                padding: 1rem 1.25rem;
+            }
+
+            .voice-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .voice-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="status.html" class="back-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back
+            </a>
+            <div class="job-badge" id="jobBadge" style="display: none;">
+                <span id="jobTitle">Loading...</span>
+            </div>
+        </div>
+
+        <div class="interview-container" id="content">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading assessment...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stop Speaking Button (fixed position) -->
+    <button class="stop-speaking-btn" id="stopSpeakingBtn" onclick="stopSpeaking()" title="Stop Speaking">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="6" y="6" width="12" height="12" rx="2"/>
+        </svg>
+    </button>
+
+    <script src="api.js"></script>
+    <script>
+        // Config
+        const urlParams = new URLSearchParams(window.location.search);
+        const applicationId = urlParams.get('applicationId');
+
+        let currentApplication = null;
+        let questionIndex = 0;
+        let conversationHistory = [];
+        let isProcessing = false;
+        let inputMode = 'text'; // 'text' or 'voice'
+        let recognition = null;
+        let isRecording = false;
+        let currentTranscript = '';
+        let isSpeaking = false;
+
+        // Initial behavioral questions
+        const initialQuestions = [
+            "Tell me about a time when you faced a significant challenge at work or in a project. How did you approach it and what was the outcome?",
+            "Describe a situation where you had to work closely with someone whose working style was very different from yours. How did you handle it?",
+            "Give me an example of when you had to learn a new skill or technology quickly. What was your approach?",
+            "Tell me about a time when you made a mistake. How did you handle it and what did you learn?",
+            "Describe a situation where you had to make a difficult decision without all the information you needed."
+        ];
+
+        let totalQuestions = initialQuestions.length;
+        let currentQuestion = '';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!applicationId) {
+                showError('No application specified. Please go to your applications page.');
+                return;
+            }
+
+            if (!api || !api.token) {
+                window.location.href = `index.html?redirect=assessment&applicationId=${applicationId}`;
+                return;
+            }
+
+            try {
+                currentApplication = await api.getApplication(applicationId);
+                
+                if (currentApplication.behavioral_score !== null && currentApplication.behavioral_score !== undefined) {
+                    showAlreadyCompleted();
+                    return;
+                }
+
+                document.getElementById('jobBadge').style.display = 'block';
+                document.getElementById('jobTitle').textContent = currentApplication.job_title || 'Position';
+
+                showIntroScreen();
+
+            } catch (error) {
+                console.error('Error loading application:', error);
+                showError('Failed to load application details. ' + error.message);
+            }
+        });
+
+        // Speech Synthesis with proper voice selection
+        function speak(text, onEnd = null) {
+            if (!('speechSynthesis' in window)) {
+                if (onEnd) onEnd();
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+            isSpeaking = true;
+            updateOrbState('speaking');
+            document.getElementById('stopSpeakingBtn').classList.add('visible');
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.95;
+            utterance.pitch = 1;
+
+            // Select voice - prioritize natural English voices
+            const loadVoicesAndSpeak = () => {
+                const voices = window.speechSynthesis.getVoices();
+                let selectedVoice = null;
+
+                // Priority: Google UK > Microsoft UK > any en-GB > any natural voice
+                selectedVoice = voices.find(v => v.name.includes('Google UK English'));
+                if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('Microsoft') && v.lang === 'en-GB');
+                if (!selectedVoice) selectedVoice = voices.find(v => v.lang === 'en-GB');
+                if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('Google') && v.lang.startsWith('en'));
+                if (!selectedVoice) selectedVoice = voices.find(v => v.lang.startsWith('en'));
+
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+
+                utterance.onend = () => {
+                    isSpeaking = false;
+                    document.getElementById('stopSpeakingBtn').classList.remove('visible');
+                    updateOrbState('idle');
+                    if (onEnd) onEnd();
+                };
+
+                utterance.onerror = () => {
+                    isSpeaking = false;
+                    document.getElementById('stopSpeakingBtn').classList.remove('visible');
+                    updateOrbState('idle');
+                    if (onEnd) onEnd();
+                };
+
+                window.speechSynthesis.speak(utterance);
+            };
+
+            if (window.speechSynthesis.getVoices().length > 0) {
+                loadVoicesAndSpeak();
+            } else {
+                window.speechSynthesis.onvoiceschanged = loadVoicesAndSpeak;
+            }
+        }
+
+        function stopSpeaking() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            isSpeaking = false;
+            document.getElementById('stopSpeakingBtn').classList.remove('visible');
+            updateOrbState('idle');
+        }
+
+        function updateOrbState(state) {
+            const orb = document.getElementById('orionOrb');
+            if (!orb) return;
+
+            orb.classList.remove('speaking', 'listening');
+            
+            if (state === 'speaking') {
+                orb.classList.add('speaking');
+            } else if (state === 'listening') {
+                orb.classList.add('listening');
+            }
+        }
+
+        // Show screens
+        function showError(message) {
+            document.getElementById('content').innerHTML = `
+                <div class="loading">
+                    <div class="error-message">
+                        <strong>Error:</strong> ${message}
+                    </div>
+                    <a href="status.html" class="btn btn-secondary" style="margin-top: 1rem;">Go to Applications</a>
+                </div>
+            `;
+        }
+
+        function showAlreadyCompleted() {
+            document.getElementById('content').innerHTML = `
+                <div class="completion-screen">
+                    <div class="completion-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                    </div>
+                    <h2 class="completion-title">Assessment Completed</h2>
+                    <p class="completion-text">
+                        You have already completed the behavioral assessment for this application.
+                        Your responses have been recorded and are being reviewed.
+                    </p>
+                    <div class="completion-actions">
+                        <a href="status.html" class="btn btn-primary">View My Applications</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showIntroScreen() {
+            document.getElementById('content').innerHTML = `
+                <div class="intro-screen">
+                    <div class="orion-orb" style="margin-bottom: 2rem;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        </svg>
+                    </div>
+                    <h2 class="intro-title">Meet Orion, Your AI Interviewer</h2>
+                    <p class="intro-text">
+                        I'll ask you a few behavioral questions to understand how you handle real-world situations. 
+                        Take your time and share specific examples from your experience. You can type or speak your answers.
+                    </p>
+                    <button class="start-btn" onclick="startAssessment()">
+                        Begin Interview
+                    </button>
+                </div>
+            `;
+        }
+
+        function startAssessment() {
+            questionIndex = 0;
+            conversationHistory = [];
+            showInterviewInterface();
+            askQuestion(initialQuestions[0]);
+        }
+
+        function showInterviewInterface() {
+            document.getElementById('content').innerHTML = `
+                <div class="progress-section">
+                    <span class="progress-text" id="questionCounter">Question 1 of ${totalQuestions}</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                    <span class="progress-text" id="progressPercent">0%</span>
+                </div>
+
+                <div class="orb-section">
+                    <div class="orion-orb" id="orionOrb" onclick="toggleOrbClick()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        </svg>
+                    </div>
+                    <div class="orb-label">Orion</div>
+
+                    <div class="question-bubble" id="questionBubble">
+                        <span id="questionText">...</span>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <!-- Conversation History -->
+                    <div class="conversation-history" id="conversationHistory"></div>
+
+                    <!-- Mode Toggle -->
+                    <div class="response-mode-toggle">
+                        <button class="mode-btn text-mode ${inputMode === 'text' ? 'active' : ''}" onclick="setInputMode('text')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            Type
+                        </button>
+                        <button class="mode-btn voice-mode ${inputMode === 'voice' ? 'active' : ''}" onclick="setInputMode('voice')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                            </svg>
+                            Speak
+                        </button>
+                    </div>
+
+                    <!-- Text Input -->
+                    <div class="text-input-area ${inputMode === 'voice' ? 'hidden' : ''}" id="textInputArea">
+                        <textarea 
+                            class="text-input" 
+                            id="textInput" 
+                            placeholder="Type your answer here..."
+                            rows="2"
+                        ></textarea>
+                        <button class="send-btn" id="sendBtn" onclick="submitTextAnswer()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"/>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Voice Input -->
+                    <div class="voice-input-area ${inputMode === 'voice' ? 'active' : ''}" id="voiceInputArea">
+                        <div style="width: 100%;">
+                            <div class="voice-transcript-label">YOUR RESPONSE:</div>
+                            <div class="voice-transcript ${isRecording ? 'listening' : ''}" id="voiceTranscript">
+                                Click "Start Recording" to speak your answer...
+                            </div>
+                        </div>
+                        <div class="voice-controls">
+                            <button class="voice-btn record ${isRecording ? 'recording' : ''}" id="recordBtn" onclick="toggleRecording()">
+                                <svg viewBox="0 0 24 24" fill="${isRecording ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+                                    ${isRecording ? '<rect x="6" y="6" width="12" height="12" rx="2"/>' : '<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/>'}
+                                </svg>
+                                ${isRecording ? 'Stop Recording' : 'Start Recording'}
+                            </button>
+                            <button class="voice-btn submit" id="voiceSubmitBtn" onclick="submitVoiceAnswer()" style="display: none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="9 18 15 12 9 6"/>
+                                </svg>
+                                Submit Answer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Setup text input events
+            document.getElementById('textInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    submitTextAnswer();
+                }
+            });
+
+            document.getElementById('textInput').addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+            });
+
+            // Initialize speech recognition
+            initSpeechRecognition();
+        }
+
+        function toggleOrbClick() {
+            if (isSpeaking) {
+                stopSpeaking();
+            }
+        }
+
+        function setInputMode(mode) {
+            inputMode = mode;
+            
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.mode-btn.${mode}-mode`).classList.add('active');
+            
+            document.getElementById('textInputArea').classList.toggle('hidden', mode === 'voice');
+            document.getElementById('voiceInputArea').classList.toggle('active', mode === 'voice');
+        }
+
+        function updateProgress() {
+            const progress = ((questionIndex) / totalQuestions) * 100;
+            document.getElementById('questionCounter').textContent = `Question ${Math.min(questionIndex + 1, totalQuestions)} of ${totalQuestions}`;
+            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function askQuestion(question) {
+            currentQuestion = question;
+            updateProgress();
+            
+            document.getElementById('questionText').textContent = question;
+            
+            // Speak the question
+            speak(question, () => {
+                // Focus on input after speaking
+                if (inputMode === 'text') {
+                    document.getElementById('textInput').focus();
+                }
+            });
+        }
+
+        // Text Answer Submission
+        async function submitTextAnswer() {
+            if (isProcessing) return;
+
+            const input = document.getElementById('textInput');
+            const answer = input.value.trim();
+
+            if (!answer || answer.length < 30) {
+                alert('Please provide a more detailed response (at least a few sentences).');
+                return;
+            }
+
+            isProcessing = true;
+            document.getElementById('sendBtn').disabled = true;
+
+            // Store in history
+            conversationHistory.push({
+                question: currentQuestion,
+                answer: answer
+            });
+
+            // Show in history UI
+            addToHistoryUI(currentQuestion, answer);
+            input.value = '';
+            input.style.height = 'auto';
+
+            // Get follow-up or next question
+            await processAnswer(answer);
+        }
+
+        // Voice Recording
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
+
+                recognition.onresult = (event) => {
+                    let transcript = '';
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        transcript += event.results[i][0].transcript;
+                    }
+                    currentTranscript = transcript;
+                    document.getElementById('voiceTranscript').textContent = transcript || 'Listening...';
+                };
+
+                recognition.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                    stopRecording();
+                };
+
+                recognition.onend = () => {
+                    if (isRecording) {
+                        recognition.start();
+                    }
+                };
+            }
+        }
+
+        function toggleRecording() {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        function startRecording() {
+            if (!recognition) {
+                alert('Speech recognition is not supported in your browser. Please use Chrome or type your answer.');
+                return;
+            }
+
+            // Stop any ongoing speech
+            stopSpeaking();
+
+            isRecording = true;
+            currentTranscript = '';
+            
+            updateOrbState('listening');
+            document.getElementById('voiceTranscript').textContent = 'Listening...';
+            document.getElementById('voiceTranscript').classList.add('listening');
+            
+            const recordBtn = document.getElementById('recordBtn');
+            recordBtn.classList.add('recording');
+            recordBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                    <rect x="6" y="6" width="12" height="12" rx="2"/>
+                </svg>
+                Stop Recording
+            `;
+
+            document.getElementById('voiceSubmitBtn').style.display = 'none';
+            
+            recognition.start();
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            
+            if (recognition) {
+                recognition.stop();
+            }
+            
+            updateOrbState('idle');
+            document.getElementById('voiceTranscript').classList.remove('listening');
+            
+            const recordBtn = document.getElementById('recordBtn');
+            recordBtn.classList.remove('recording');
+            recordBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                </svg>
+                Start Recording
+            `;
+
+            if (currentTranscript.trim().length > 30) {
+                document.getElementById('voiceSubmitBtn').style.display = 'flex';
+            } else if (currentTranscript.trim().length > 0) {
+                document.getElementById('voiceTranscript').textContent = currentTranscript + '\n\n(Please provide a longer response)';
+            }
+        }
+
+        async function submitVoiceAnswer() {
+            if (isProcessing || currentTranscript.trim().length < 30) return;
+
+            isProcessing = true;
+            document.getElementById('voiceSubmitBtn').style.display = 'none';
+
+            const answer = currentTranscript.trim();
+
+            // Store in history
+            conversationHistory.push({
+                question: currentQuestion,
+                answer: answer
+            });
+
+            // Show in history UI
+            addToHistoryUI(currentQuestion, answer);
+            
+            currentTranscript = '';
+            document.getElementById('voiceTranscript').textContent = 'Click "Start Recording" to speak your answer...';
+
+            // Get follow-up or next question
+            await processAnswer(answer);
+        }
+
+        // Process answer and get follow-up using Groq AI
+        async function processAnswer(answer) {
+            questionIndex++;
+
+            if (questionIndex >= totalQuestions) {
+                // All questions answered, complete assessment
+                await completeAssessment();
+                return;
+            }
+
+            // Show thinking state
+            document.getElementById('questionText').textContent = 'Thinking...';
+            updateOrbState('speaking');
+
+            try {
+                // Try to get AI follow-up question based on answer
+                const followUpQuestion = await getAIFollowUp(currentQuestion, answer);
+                
+                if (followUpQuestion && followUpQuestion !== initialQuestions[questionIndex]) {
+                    // Use AI-generated follow-up
+                    askQuestion(followUpQuestion);
+                } else {
+                    // Fallback to next initial question
+                    askQuestion(initialQuestions[questionIndex]);
+                }
+            } catch (error) {
+                console.error('Error getting follow-up:', error);
+                // Fallback to next initial question
+                askQuestion(initialQuestions[questionIndex]);
+            }
+
+            isProcessing = false;
+            document.getElementById('sendBtn').disabled = false;
+        }
+
+        // Get AI-powered follow-up question using backend
+        async function getAIFollowUp(question, answer) {
+            try {
+                const response = await api.request('/ai/chat/assessment-followup', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        question: question,
+                        answer: answer,
+                        question_index: questionIndex - 1, // -1 because we incremented before calling
+                        job_title: currentApplication.job_title || 'the position'
+                    })
+                });
+
+                return response.follow_up_question;
+            } catch (error) {
+                console.error('Failed to get AI follow-up:', error);
+                return null;
+            }
+        }
+
+        function addToHistoryUI(question, answer) {
+            const historyContainer = document.getElementById('conversationHistory');
+            historyContainer.classList.add('visible');
+
+            const questionItem = document.createElement('div');
+            questionItem.className = 'history-item ai';
+            questionItem.innerHTML = `<div class="label">Orion</div>${question}`;
+            historyContainer.appendChild(questionItem);
+
+            const answerItem = document.createElement('div');
+            answerItem.className = 'history-item user';
+            answerItem.innerHTML = `<div class="label">You</div>${answer}`;
+            historyContainer.appendChild(answerItem);
+
+            historyContainer.scrollTop = historyContainer.scrollHeight;
+        }
+
+        async function completeAssessment() {
+            document.getElementById('content').innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Processing your responses...</p>
+                    <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 0.5rem;">Orion is analyzing your answers</p>
+                </div>
+            `;
+
+            try {
+                await api.request('/assessments/behavioral', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        application_id: applicationId,
+                        answers: conversationHistory
+                    })
+                });
+
+                showCompletionScreen();
+            } catch (error) {
+                console.error('Error submitting assessment:', error);
+                showCompletionScreen(true);
+            }
+        }
+
+        function showCompletionScreen(hasError = false) {
+            // Celebrate with voice
+            speak("Congratulations! You've completed the behavioral assessment. Your responses have been recorded and will be reviewed by our team. Good luck!");
+
+            document.getElementById('content').innerHTML = `
+                <div class="completion-screen">
+                    <div class="completion-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                    </div>
+                    <h2 class="completion-title">Assessment Complete!</h2>
+                    <p class="completion-text">
+                        Thank you for completing the behavioral assessment with Orion.<br>
+                        Your responses have been recorded and will be reviewed by our team.
+                        ${hasError ? '<br><small style="color: #fca5a5;">Note: There was an issue saving some data.</small>' : ''}
+                    </p>
+                    <div class="completion-actions">
+                        <a href="status.html" class="btn btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                            View My Applications
+                        </a>
+                        <a href="jobs.html" class="btn btn-secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                            </svg>
+                            Browse More Jobs
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

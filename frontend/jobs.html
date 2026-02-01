@@ -95,7 +95,7 @@
 
         .upload-section.has-file {
             border-color: rgba(34, 197, 94, 0.6);
-            background:
+            background: 
                 radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.1), transparent 40%),
                 rgba(15, 42, 23, 0.6);
             animation: successPulse 2s ease-in-out;
@@ -115,7 +115,7 @@
 
         .upload-section:not(.has-file):hover {
             border-color: rgba(59, 130, 246, 0.8);
-            background:
+            background: 
                 radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15), transparent 60%),
                 rgba(15, 23, 42, 0.8);
             transform: scale(1.01);
@@ -229,6 +229,8 @@
             background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
             opacity: 0;
             transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .job-card:hover::before {
@@ -249,7 +251,7 @@
         .job-card:hover {
             transform: translateY(-10px) scale(1.02);
             border-color: rgba(59, 130, 246, 0.6);
-            box-shadow:
+            box-shadow: 
                 0 20px 40px rgba(59, 130, 246, 0.3),
                 0 0 60px rgba(139, 92, 246, 0.2);
         }
@@ -320,6 +322,7 @@
         }
 
         .apply-btn {
+            display: block;
             width: 100%;
             padding: 0.75rem;
             background: linear-gradient(135deg, #3b82f6, #2563eb);
@@ -329,10 +332,26 @@
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.3s;
+            text-align: center;
+            text-decoration: none;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 10;
         }
 
         .apply-btn:hover {
             transform: translateY(-2px);
+            color: white;
+        }
+        
+        /* Ensure card content is above the ::before pseudo-element */
+        .job-card > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .job-card::before {
+            pointer-events: none;
         }
 
         .user-badge {
@@ -949,7 +968,7 @@
                 </svg></div>
             <h2 class="upload-title">Upload Your CV/Resume</h2>
             <p class="upload-desc">We'll match you with the best opportunities based on your experience</p>
-
+            
             <div class="file-input-wrapper">
                 <input type="file" id="cv-upload" accept=".pdf,.doc,.docx" onchange="handleFileUpload(event)">
                 <button class="upload-btn" onclick="triggerUpload()">
@@ -971,13 +990,13 @@
         <!-- Jobs Section -->
         <div class="jobs-section" id="jobs-section">
             <h2 style="margin-bottom: 1.5rem; font-size: 1.8rem;">Available Positions</h2>
-
+            
             <div class="jobs-grid">
                 <!-- Data will be loaded via API -->
                 <p class="job-description">Loading jobs...</p>
-            </div>
-        </div>
-    </div>
+                    </div>
+                    </div>
+                </div>
 
     <!-- Application Form Modal -->
     <div class="application-modal" id="applicationModal">
@@ -985,11 +1004,11 @@
             <div class="application-form-header">
                 <h2 class="application-form-title">Apply for Position</h2>
                 <button class="application-close-btn" onclick="closeApplicationModal()">&times;</button>
-            </div>
+                    </div>
 
             <div id="jobPreview" class="job-preview">
                 <!-- Job details will be populated here -->
-            </div>
+                    </div>
 
             <form id="applicationForm">
                 <div id="cvInfoSection"></div>
@@ -1015,14 +1034,14 @@
                     <small style="color: rgba(156, 163, 175, 1); margin-top: 0.5rem; display: block;">
                         Accepted formats: PDF, DOC, DOCX (Max 10MB)
                     </small>
-                </div>
+                    </div>
 
                 <div class="form-group" id="cvUploadOption" style="display: none; margin-top: -1rem;">
                     <button type="button" class="btn-secondary" style="width: 100%; padding: 0.5rem;"
                         onclick="showCVUploadInForm()">
                         Or upload a new CV
                     </button>
-                </div>
+                    </div>
 
                 <div class="form-group">
                     <label for="coverLetter">Cover Letter / Motivation (Optional)</label>
@@ -1036,10 +1055,10 @@
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" onclick="closeApplicationModal()">Cancel</button>
                     <button type="submit" class="btn-primary" id="submitApplicationBtn">Submit Application</button>
-                </div>
+                    </div>
             </form>
-        </div>
-    </div>
+                    </div>
+                </div>
 
     <!-- Login Modal -->
     <div class="login-modal" id="loginModal">
@@ -1050,13 +1069,13 @@
             <div class="modal-tabs">
                 <button class="modal-tab active" onclick="switchModalTab('login')">Login</button>
                 <button class="modal-tab" onclick="switchModalTab('signup')">Sign Up</button>
-            </div>
+                    </div>
 
             <form id="modalLoginForm" class="modal-form active">
                 <div class="input-group">
                     <label for="modalLoginEmail">Email</label>
                     <input type="email" id="modalLoginEmail" placeholder="you@example.com" required>
-                </div>
+                    </div>
                 <div class="input-group">
                     <label for="modalLoginPassword">Password</label>
                     <input type="password" id="modalLoginPassword" placeholder="••••••••" required>
@@ -1068,18 +1087,18 @@
                 <div class="input-group">
                     <label for="modalSignupName">Full Name</label>
                     <input type="text" id="modalSignupName" placeholder="John Doe" required>
-                </div>
+                    </div>
                 <div class="input-group">
                     <label for="modalSignupEmail">Email</label>
                     <input type="email" id="modalSignupEmail" placeholder="you@example.com" required>
-                </div>
+                    </div>
                 <div class="input-group">
                     <label for="modalSignupPassword">Password</label>
                     <input type="password" id="modalSignupPassword" placeholder="••••••••" required>
                 </div>
                 <button type="submit" class="sign-btn">Create Account</button>
             </form>
-        </div>
+            </div>
     </div>
 
     <button class="orion-chat-toggle" id="orionChatToggle" aria-label="Chat with Orion">
@@ -1106,12 +1125,13 @@
             <div class="orion-msg bot">Hi! I'm Orion. Ask me anything about job opportunities at SPACE42.</div>
         </div>
         <div class="orion-chat-input-area">
-            <input type="text" class="orion-chat-input" id="orionChatInput" placeholder="Ask Orion..."
+            <input type="text" class="orion-chat-input" id="orionChatInput" placeholder="Type or click mic to speak..."
                 autocomplete="off">
         </div>
     </div>
 
     <script src="api.js"></script>
+    <script src="voice-chat.js"></script>
     <script>
         sessionStorage.setItem('returningUser', '1');
 
@@ -1137,40 +1157,65 @@
         document.getElementById('orionChatToggle').onclick = () => document.getElementById('orionChatPanel').classList.toggle('open');
         document.getElementById('orionChatClose').onclick = () => document.getElementById('orionChatPanel').classList.remove('open');
 
+        // Initialize Voice Chat
+        let voiceChat = null;
+        if (typeof initVoiceChatWidget === 'function') {
+            voiceChat = initVoiceChatWidget('orionChatInput', 'orionChatMessages', {
+                apiKey: 'VF.DM.697f067be3fe14c39580e132.p8qmZZk2CHACMe7v',
+                projectId: '697ec5f2f3b8565c0e66aac3'
+            });
+        }
+
+        // Send message function
+        async function sendChatMessage() {
+            const input = document.getElementById('orionChatInput');
+            const t = input.value.trim();
+            if (!t) return;
+            
+            const msgs = document.getElementById('orionChatMessages');
+            // Add User Message
+            const u = document.createElement('div'); u.className = 'orion-msg user'; u.textContent = t; msgs.appendChild(u);
+            input.value = '';
+            msgs.scrollTop = msgs.scrollHeight;
+
+            // Add Loading/Bot Message
+            if (api && api.token) {
+                try {
+                    const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "..."; msgs.appendChild(r);
+                    msgs.scrollTop = msgs.scrollHeight;
+
+                    const resp = await api.chat(t, currentConversationId);
+                    currentConversationId = resp.conversation_id;
+                    r.textContent = resp.response;
+                    
+                    // Add speak button and auto-speak
+                    if (typeof addSpeakButton === 'function') {
+                        addSpeakButton(r, resp.response);
+                    }
+                    if (voiceChat) {
+                        voiceChat.speak(resp.response);
+                    }
+                } catch (err) {
+                    const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "I'm having trouble connecting right now."; msgs.appendChild(r);
+                }
+            } else {
+                setTimeout(() => {
+                    const r = document.createElement('div');
+                    r.className = 'orion-msg bot';
+                    r.textContent = "Please sign in or upload your CV so I can help you better!";
+                    msgs.appendChild(r);
+                    msgs.scrollTop = msgs.scrollHeight;
+                    if (voiceChat) {
+                        voiceChat.speak("Please sign in or upload your CV so I can help you better!");
+                    }
+                }, 600);
+            }
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
         document.getElementById('orionChatInput').onkeypress = async (e) => {
             if (e.key === 'Enter') {
-                const input = document.getElementById('orionChatInput');
-                const t = input.value.trim();
-                if (t) {
-                    const msgs = document.getElementById('orionChatMessages');
-                    // Add User Message
-                    const u = document.createElement('div'); u.className = 'orion-msg user'; u.textContent = t; msgs.appendChild(u);
-                    input.value = '';
-                    msgs.scrollTop = msgs.scrollHeight;
-
-                    // Add Loading/Bot Message
-                    if (api.token) {
-                        try {
-                            const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "..."; msgs.appendChild(r);
-                            msgs.scrollTop = msgs.scrollHeight;
-
-                            const resp = await api.chat(t, currentConversationId);
-                            currentConversationId = resp.conversation_id;
-                            r.textContent = resp.response;
-                        } catch (err) {
-                            const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "I'm having trouble connecting right now."; msgs.appendChild(r);
-                        }
-                    } else {
-                        setTimeout(() => {
-                            const r = document.createElement('div');
-                            r.className = 'orion-msg bot';
-                            r.textContent = "Please sign in or upload your CV so I can help you better!";
-                            msgs.appendChild(r);
-                            msgs.scrollTop = msgs.scrollHeight;
-                        }, 600);
-                    }
-                    msgs.scrollTop = msgs.scrollHeight;
-                }
+                sendChatMessage();
             }
         };
 
@@ -1222,7 +1267,7 @@
                     if (pendingAction.type === 'upload') {
                         actuallyUploadFile(pendingAction.file);
                     } else if (pendingAction.type === 'apply') {
-                        setTimeout(() => applyToJob(pendingAction.jobId, pendingAction.jobTitle), 100);
+                        setTimeout(() => goToApply(pendingAction.jobId, pendingAction.jobTitle), 100);
                     } else if (pendingAction.type === 'triggerUpload') {
                         setTimeout(() => document.getElementById('cv-upload').click(), 100);
                     }
@@ -1261,7 +1306,7 @@
                     if (pendingAction.type === 'upload') {
                         actuallyUploadFile(pendingAction.file);
                     } else if (pendingAction.type === 'apply') {
-                        setTimeout(() => applyToJob(pendingAction.jobId, pendingAction.jobTitle), 100);
+                        setTimeout(() => goToApply(pendingAction.jobId, pendingAction.jobTitle), 100);
                     } else if (pendingAction.type === 'triggerUpload') {
                         setTimeout(() => document.getElementById('cv-upload').click(), 100);
                     }
@@ -1358,11 +1403,9 @@
                             <p class="job-description">
                                 ${(job.description || '').substring(0, 150)}...
                             </p>
-                            <button class="apply-btn" 
-                                onclick="applyToJob('${job.id}', '${escapeHtml(job.title)}')"
-                                ${hasMatch && !hasAllRequired ? 'disabled style="opacity: 0.5; cursor: not-allowed;" title="Missing required skills"' : ''}>
-                                ${hasMatch && !hasAllRequired ? 'Missing Required Skills' : 'Apply Now'}
-                            </button>
+                            <a href="apply.html?jobId=${job.id}&title=${encodeURIComponent(job.title)}" class="apply-btn">
+                                Apply Now
+                            </a>
                         </div>
                     `;
                     }).join('');
@@ -1398,8 +1441,8 @@
         }
 
         async function actuallyUploadFile(file) {
-            document.getElementById('file-name').textContent = file.name;
-            document.getElementById('file-info').classList.add('show');
+                document.getElementById('file-name').textContent = file.name;
+                document.getElementById('file-info').classList.add('show');
 
             try {
                 document.getElementById('file-name').textContent = "Uploading...";
@@ -1476,6 +1519,28 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        // Redirect to application page
+        function goToApply(jobId, jobTitle) {
+            // Check if logged in
+            if (!api || !api.token) {
+                showLoginModal({ type: 'apply', jobId: jobId, jobTitle: jobTitle });
+                return;
+            }
+
+            // Check if user is eligible (if CV is uploaded and analyzed)
+            if (currentCVId && jobMatchData[jobId]) {
+                const match = jobMatchData[jobId];
+                if (!match.has_all_required_skills) {
+                    const missingSkills = match.missing_non_negotiable_skills || [];
+                    alert(`Cannot apply: You are missing the following required skills:\n\n${missingSkills.join(', ')}\n\nPlease update your CV or consider other positions.`);
+                    return;
+                }
+            }
+
+            // Redirect to apply page
+            window.location.href = `apply.html?jobId=${encodeURIComponent(jobId)}&title=${encodeURIComponent(jobTitle)}`;
         }
 
         async function applyToJob(jobId, jobTitle) {
@@ -1640,8 +1705,14 @@
                 }
             });
 
+            // Force show the modal
+            modal.style.display = 'flex';
             modal.classList.add('show');
             console.log('Modal shown, classList:', modal.classList.toString());
+            console.log('Modal display style:', modal.style.display);
+            
+            // Scroll to top of modal
+            modal.scrollTop = 0;
         }
 
         function closeApplicationModal() {

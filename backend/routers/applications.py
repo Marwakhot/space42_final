@@ -27,10 +27,10 @@ APPLICATION_STATUSES = [
 ]
 
 VALID_TRANSITIONS = {
-    "applied": ["under_ai_review", "rejected"],
-    "under_ai_review": ["shortlisted", "rejected"],
-    "shortlisted": ["interview_scheduled", "rejected"],
-    "interview_scheduled": ["interview_completed", "rejected"],
+    "applied": ["under_ai_review", "shortlisted", "interview_scheduled", "rejected"],
+    "under_ai_review": ["shortlisted", "interview_scheduled", "rejected"],
+    "shortlisted": ["interview_scheduled", "rejected", "offered"],
+    "interview_scheduled": ["interview_completed", "rejected", "offered"],
     "interview_completed": ["offered", "rejected"],
     "rejected": [],
     "offered": []
@@ -68,6 +68,12 @@ class ApplicationResponse(BaseModel):
     rank_in_role: Optional[int] = None
     eligibility_check_passed: Optional[bool] = None
     eligibility_details: Optional[dict] = None
+    parameter_scores: Optional[dict] = None  # Behavioral assessment breakdown
+    feedback_summary: Optional[str] = None   # AI feedback summary
+    interview_scheduled_at: Optional[str] = None
+    interview_type: Optional[str] = None
+    interview_with: Optional[str] = None
+    interview_link: Optional[str] = None
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
 
@@ -263,21 +269,46 @@ async def list_applications(
     
     result = query.order('applied_date', desc=True).execute()
     
-    return [ApplicationResponse(
-        id=str(app['id']),
-        candidate_id=str(app['candidate_id']),
-        job_role_id=str(app['job_role_id']),
-        cv_id=str(app['cv_id']) if app.get('cv_id') else None,
-        status=app['status'],
-        technical_score=app.get('technical_score'),
-        behavioral_score=app.get('behavioral_score'),
-        combined_score=app.get('combined_score'),
-        rank_in_role=app.get('rank_in_role'),
-        eligibility_check_passed=app.get('eligibility_check_passed'),
-        eligibility_details=app.get('eligibility_details'),
-        created_at=app.get('created_at'),
-        updated_at=app.get('updated_at')
-    ) for app in result.data]
+    # Fetch behavioral assessment details for each application
+    applications = []
+    for app in result.data:
+        # Try to get behavioral assessment scores
+        parameter_scores = None
+        feedback_summary = None
+        try:
+            assessment_result = supabase.table('behavioral_assessment_scores').select(
+                "parameter_scores, feedback_summary"
+            ).eq('application_id', app['id']).order('created_at', desc=True).limit(1).execute()
+            
+            if assessment_result.data:
+                parameter_scores = assessment_result.data[0].get('parameter_scores')
+                feedback_summary = assessment_result.data[0].get('feedback_summary')
+        except:
+            pass  # Table may not exist or other error
+        
+        applications.append(ApplicationResponse(
+            id=str(app['id']),
+            candidate_id=str(app['candidate_id']),
+            job_role_id=str(app['job_role_id']),
+            cv_id=str(app['cv_id']) if app.get('cv_id') else None,
+            status=app['status'],
+            technical_score=app.get('technical_score'),
+            behavioral_score=app.get('behavioral_score'),
+            combined_score=app.get('combined_score'),
+            rank_in_role=app.get('rank_in_role'),
+            eligibility_check_passed=app.get('eligibility_check_passed'),
+            eligibility_details=app.get('eligibility_details'),
+            parameter_scores=parameter_scores,
+            feedback_summary=feedback_summary,
+            interview_scheduled_at=app.get('interview_scheduled_at'),
+            interview_type=app.get('interview_type'),
+            interview_with=app.get('interview_with'),
+            interview_link=app.get('interview_link'),
+            created_at=app.get('created_at'),
+            updated_at=app.get('updated_at')
+        ))
+    
+    return applications
 
 
 @router.get("/my", response_model=List[ApplicationWithJobResponse])
@@ -303,6 +334,10 @@ async def get_my_applications(
             job_title = job_result.data[0].get('title')
             job_department = job_result.data[0].get('department')
         
+        # Get behavioral assessment details (only parameter_scores and feedback_summary for candidate view is optional)
+        parameter_scores = None
+        feedback_summary = None
+        
         applications.append(ApplicationWithJobResponse(
             id=str(app['id']),
             candidate_id=str(app['candidate_id']),
@@ -315,6 +350,12 @@ async def get_my_applications(
             rank_in_role=app.get('rank_in_role'),
             eligibility_check_passed=app.get('eligibility_check_passed'),
             eligibility_details=app.get('eligibility_details'),
+            parameter_scores=parameter_scores,
+            feedback_summary=feedback_summary,
+            interview_scheduled_at=app.get('interview_scheduled_at'),
+            interview_type=app.get('interview_type'),
+            interview_with=app.get('interview_with'),
+            interview_link=app.get('interview_link'),
             created_at=app.get('created_at'),
             updated_at=app.get('updated_at'),
             job_title=job_title,
@@ -422,6 +463,108 @@ async def update_application_status(
     
     app = result.data[0]
     
+    # Send email notifications based on status change
+    if request.status == 'rejected':
+        # Send personalized rejection email
+        try:
+            from services.email_service import send_rejection_email
+            
+            # Get candidate info
+            candidate_result = supabase.table('candidates').select("*").eq('id', app['candidate_id']).execute()
+            candidate = candidate_result.data[0] if candidate_result.data else None
+            
+            # Get job info
+            job_result = supabase.table('job_roles').select("title, description").eq('id', app['job_role_id']).execute()
+            job_title = job_result.data[0]['title'] if job_result.data else "the position"
+            job_description = job_result.data[0].get('description', '') if job_result.data else ""
+            
+            # Get feedback from multiple sources
+            feedback_parts = []
+            
+            # 1. Get HR notes/feedback - THIS IS THE KEY ADDITION
+            try:
+                hr_feedback_result = supabase.table('hr_feedback').select(
+                    "weaknesses, missing_requirements, additional_notes, recommendation"
+                ).eq('application_id', app['id']).order('created_at', desc=True).execute()
+                
+                if hr_feedback_result.data:
+                    for fb in hr_feedback_result.data:
+                        if fb.get('weaknesses'):
+                            feedback_parts.append(f"Areas for improvement: {fb['weaknesses']}")
+                        if fb.get('missing_requirements'):
+                            feedback_parts.append(f"Skills to develop: {fb['missing_requirements']}")
+            except:
+                pass
+            
+            # 2. Get behavioral assessment feedback
+            try:
+                assessment_result = supabase.table('behavioral_assessment_scores').select(
+                    "summary"
+                ).eq('application_id', app['id']).limit(1).execute()
+                if assessment_result.data and assessment_result.data[0].get('summary'):
+                    feedback_parts.append(assessment_result.data[0]['summary'])
+            except:
+                pass
+            
+            # Combine all feedback
+            feedback_summary = ". ".join(feedback_parts[:2]) if feedback_parts else None  # Limit to 2 pieces
+            
+            # Get CV/resume text for AI generation
+            resume_text = ""
+            if app.get('cv_id'):
+                try:
+                    cv_result = supabase.table('cvs').select("parsed_data").eq('id', app['cv_id']).execute()
+                    if cv_result.data and cv_result.data[0].get('parsed_data'):
+                        parsed = cv_result.data[0]['parsed_data']
+                        skills = parsed.get('skills', {})
+                        if isinstance(skills, dict):
+                            resume_text = ", ".join(skills.get('technical', []))
+                except:
+                    pass
+            
+            if candidate:
+                # Fire and forget - don't block the response
+                import asyncio
+                candidate_name = f"{candidate.get('first_name', '')} {candidate.get('last_name', '')}".strip()
+                if not candidate_name:
+                    candidate_name = candidate['email'].split('@')[0]
+                    
+                asyncio.create_task(send_rejection_email(
+                    candidate_email=candidate['email'],
+                    candidate_name=candidate_name,
+                    job_title=job_title,
+                    feedback_summary=feedback_summary,
+                    role_description=job_description,
+                    candidate_resume=resume_text
+                ))
+        except Exception as e:
+            print(f"Failed to send rejection email: {e}")
+    
+    elif request.status == 'offered':
+        # Send offer email
+        try:
+            from services.email_service import send_offer_email
+            
+            candidate_result = supabase.table('candidates').select("*").eq('id', app['candidate_id']).execute()
+            candidate = candidate_result.data[0] if candidate_result.data else None
+            
+            job_result = supabase.table('job_roles').select("title").eq('id', app['job_role_id']).execute()
+            job_title = job_result.data[0]['title'] if job_result.data else "the position"
+            
+            if candidate:
+                import asyncio
+                candidate_name = f"{candidate.get('first_name', '')} {candidate.get('last_name', '')}".strip()
+                if not candidate_name:
+                    candidate_name = candidate['email'].split('@')[0]
+                    
+                asyncio.create_task(send_offer_email(
+                    candidate_email=candidate['email'],
+                    candidate_name=candidate_name,
+                    job_title=job_title
+                ))
+        except Exception as e:
+            print(f"Failed to send offer email: {e}")
+    
     return ApplicationResponse(
         id=str(app['id']),
         candidate_id=str(app['candidate_id']),
@@ -434,6 +577,113 @@ async def update_application_status(
         rank_in_role=app.get('rank_in_role'),
         eligibility_check_passed=app.get('eligibility_check_passed'),
         eligibility_details=app.get('eligibility_details'),
+        created_at=app.get('created_at'),
+        updated_at=app.get('updated_at')
+    )
+
+
+# ============ Interview Scheduling ============
+
+class InterviewScheduleRequest(BaseModel):
+    scheduled_at: str  # ISO datetime string
+    interview_type: str = "Video Call"  # Video Call, Phone Call, In-Person
+    interviewer: str = "HR Team"
+    meeting_link: Optional[str] = None
+
+
+@router.post("/{application_id}/schedule-interview", response_model=ApplicationResponse)
+async def schedule_interview(
+    application_id: str,
+    request: InterviewScheduleRequest,
+    current_user: dict = Depends(require_hr)
+):
+    """
+    Schedule an interview for an application. HR only.
+    Updates the application with interview details and sets status to 'interview_scheduled'.
+    """
+    supabase = get_supabase_client()
+    
+    # Get current application
+    existing = supabase.table('applications').select("*").eq('id', application_id).execute()
+    if not existing.data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Application not found"
+        )
+    
+    current_app = existing.data[0]
+    
+    # Can't schedule interview for rejected applications
+    if current_app['status'] == 'rejected':
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot schedule interview for rejected application"
+        )
+    
+    # Update application with interview details
+    update_data = {
+        "status": "interview_scheduled",
+        "interview_scheduled_at": request.scheduled_at,
+        "interview_type": request.interview_type,
+        "interview_with": request.interviewer,
+        "interview_link": request.meeting_link,
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    result = supabase.table('applications').update(update_data).eq('id', application_id).execute()
+    
+    if not result.data:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to schedule interview"
+        )
+    
+    app = result.data[0]
+    
+    # Send interview scheduled email
+    try:
+        from services.email_service import send_interview_scheduled_email
+        
+        candidate_result = supabase.table('candidates').select("*").eq('id', app['candidate_id']).execute()
+        candidate = candidate_result.data[0] if candidate_result.data else None
+        
+        job_result = supabase.table('job_roles').select("title").eq('id', app['job_role_id']).execute()
+        job_title = job_result.data[0]['title'] if job_result.data else "the position"
+        
+        if candidate:
+            import asyncio
+            candidate_name = f"{candidate.get('first_name', '')} {candidate.get('last_name', '')}".strip()
+            if not candidate_name:
+                candidate_name = candidate['email'].split('@')[0]
+                
+            asyncio.create_task(send_interview_scheduled_email(
+                candidate_email=candidate['email'],
+                candidate_name=candidate_name,
+                job_title=job_title,
+                interview_date=request.scheduled_at,
+                interview_type=request.interview_type,
+                interviewer=request.interviewer,
+                meeting_link=request.meeting_link
+            ))
+    except Exception as e:
+        print(f"Failed to send interview email: {e}")
+    
+    return ApplicationResponse(
+        id=str(app['id']),
+        candidate_id=str(app['candidate_id']),
+        job_role_id=str(app['job_role_id']),
+        cv_id=str(app['cv_id']) if app.get('cv_id') else None,
+        status=app['status'],
+        technical_score=app.get('technical_score'),
+        behavioral_score=app.get('behavioral_score'),
+        combined_score=app.get('combined_score'),
+        rank_in_role=app.get('rank_in_role'),
+        eligibility_check_passed=app.get('eligibility_check_passed'),
+        eligibility_details=app.get('eligibility_details'),
+        interview_scheduled_at=app.get('interview_scheduled_at'),
+        interview_type=app.get('interview_type'),
+        interview_with=app.get('interview_with'),
+        interview_link=app.get('interview_link'),
         created_at=app.get('created_at'),
         updated_at=app.get('updated_at')
     )

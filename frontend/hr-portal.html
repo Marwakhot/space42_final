@@ -1153,43 +1153,44 @@
             <!-- Tab Navigation -->
             <div class="hr-tabs">
                 <button class="hr-tab active" data-tab="jobs">Open Positions</button>
+                <button class="hr-tab" data-tab="interviews">Interviews</button>
                 <button class="hr-tab" data-tab="talent">Talent Orbit</button>
             </div>
 
             <!-- Jobs Tab -->
             <div class="hr-tab-content active" id="tab-jobs">
-                <!-- Orion Greeting -->
-                <div class="orion-greeting">
-                    <div class="orion-avatar">
+            <!-- Orion Greeting -->
+            <div class="orion-greeting">
+                <div class="orion-avatar">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <rect x="5" y="2" width="14" height="10" rx="2" />
                             <circle cx="8.5" cy="7" r="1" />
                             <circle cx="15.5" cy="7" r="1" />
                             <path d="M9 11h6M5 12v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" />
                         </svg>
-                    </div>
-                    <div>
-                        <h1 id="orionGreeting">Hello!</h1>
-                        <p id="orionSub">Your hiring dashboard is ready. Click a job to view applicants.</p>
-                    </div>
                 </div>
-
-                <!-- Job Panels -->
-                <div class="jobs-header">
-                    <h2>Open Positions</h2>
+                <div>
+                    <h1 id="orionGreeting">Hello!</h1>
+                    <p id="orionSub">Your hiring dashboard is ready. Click a job to view applicants.</p>
                 </div>
-                <div class="jobs-panels" id="jobsPanels"></div>
+            </div>
 
-                <!-- Job Detail (shown when job clicked) -->
-                <div class="job-detail-section" id="jobDetailSection">
-                    <h3 id="jobDetailTitle"></h3>
+            <!-- Job Panels -->
+            <div class="jobs-header">
+                <h2>Open Positions</h2>
+            </div>
+            <div class="jobs-panels" id="jobsPanels"></div>
+
+            <!-- Job Detail (shown when job clicked) -->
+            <div class="job-detail-section" id="jobDetailSection">
+                <h3 id="jobDetailTitle"></h3>
                     <div class="job-detail-meta" id="jobDetailMeta"
                         style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;font-size:0.9rem;color:rgba(255,255,255,0.7);">
                         <span id="jobDetailDept"></span>
                         <span id="jobDetailLocation"></span>
                         <span id="jobDetailWorkType"></span>
                     </div>
-                    <p class="job-desc" id="jobDetailDesc"></p>
+                <p class="job-desc" id="jobDetailDesc"></p>
 
                     <div class="job-detail-grid"
                         style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:1.5rem 0;">
@@ -1224,7 +1225,7 @@
                         <span id="jobDetailOpenings" style="font-size:0.9rem;color:rgba(255,255,255,0.6);"></span>
                     </div>
 
-                    <button class="applicants-btn" id="applicantsBtn">
+                <button class="applicants-btn" id="applicantsBtn">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -1232,10 +1233,55 @@
                             <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                             <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                         </svg>
-                        View Applicants
-                    </button>
-                </div>
+                    View Applicants
+                </button>
+            </div>
             </div><!-- /tab-jobs -->
+
+            <!-- Interviews Tab -->
+            <div class="hr-tab-content" id="tab-interviews">
+                <div class="talent-orbit-intro">
+                    <h3 class="talent-orbit-section-title">Interview Schedule</h3>
+                    <p class="talent-orbit-section-desc">Manage and track all scheduled interviews across positions.</p>
+                </div>
+                
+                <!-- Interview Stats -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem;">
+                    <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 1rem; padding: 1.25rem; text-align: center;">
+                        <div id="interviewsToday" style="font-size: 2rem; font-weight: 700; color: #60a5fa;">0</div>
+                        <div style="font-size: 0.85rem; color: rgba(255,255,255,0.6);">Today</div>
+                    </div>
+                    <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 1rem; padding: 1.25rem; text-align: center;">
+                        <div id="interviewsThisWeek" style="font-size: 2rem; font-weight: 700; color: #a78bfa;">0</div>
+                        <div style="font-size: 0.85rem; color: rgba(255,255,255,0.6);">This Week</div>
+                    </div>
+                    <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 1rem; padding: 1.25rem; text-align: center;">
+                        <div id="interviewsCompleted" style="font-size: 2rem; font-weight: 700; color: #22c55e;">0</div>
+                        <div style="font-size: 0.85rem; color: rgba(255,255,255,0.6);">Completed</div>
+                    </div>
+                    <div style="background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 1rem; padding: 1.25rem; text-align: center;">
+                        <div id="interviewsPending" style="font-size: 2rem; font-weight: 700; color: #fbbf24;">0</div>
+                        <div style="font-size: 0.85rem; color: rgba(255,255,255,0.6);">Pending</div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Interviews List -->
+                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; overflow: hidden;">
+                    <div style="padding: 1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+                        <h4 style="margin: 0; font-size: 1rem; color: #f3f4f6;">Upcoming Interviews</h4>
+                        <button onclick="refreshInterviews()" style="padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; border-radius: 0.5rem; cursor: pointer; font-size: 0.85rem;">
+                            🔄 Refresh
+                        </button>
+                    </div>
+                    <div id="interviewsList" style="padding: 1rem;">
+                        <div style="text-align: center; padding: 2rem; color: rgba(255,255,255,0.5);">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📅</div>
+                            <p>No interviews scheduled yet.</p>
+                            <p style="font-size: 0.85rem;">Schedule interviews from the applicant cards in Open Positions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /tab-interviews -->
 
             <!-- Talent Orbit Tab -->
             <div class="hr-tab-content" id="tab-talent">
@@ -1286,12 +1332,27 @@
 
     <!-- Applicants Modal -->
     <div class="modal-overlay" id="applicantsModal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 900px;">
             <div class="modal-header">
                 <h2 id="applicantsModalTitle">Applicants</h2>
                 <button class="modal-close" id="applicantsModalClose">&times;</button>
             </div>
-            <div class="modal-body" id="applicantsList"></div>
+            <!-- Select Top N Controls -->
+            <div id="topNControls" style="padding: 1rem 1.5rem; background: rgba(34, 197, 94, 0.1); border-bottom: 1px solid rgba(34, 197, 94, 0.3); display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                <span style="color: #22c55e; font-weight: 600;">Quick Actions:</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: rgba(255,255,255,0.7);">Shortlist top</span>
+                    <input type="number" id="topNInput" min="1" max="100" value="3" style="width: 60px; padding: 0.5rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(34, 197, 94, 0.4); border-radius: 0.4rem; color: white; text-align: center; font-size: 1rem;">
+                    <span style="color: rgba(255,255,255,0.7);">candidates</span>
+                </div>
+                <button id="shortlistTopNBtn" style="padding: 0.5rem 1rem; background: linear-gradient(135deg, #22c55e, #16a34a); border: none; border-radius: 0.5rem; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                    ✓ Shortlist Top
+                </button>
+                <button id="rejectRestBtn" style="padding: 0.5rem 1rem; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 0.5rem; color: #ef4444; font-weight: 500; cursor: pointer; transition: all 0.3s;">
+                    ✗ Reject Others
+                </button>
+            </div>
+            <div class="modal-body" id="applicantsList" style="max-height: 60vh; overflow-y: auto;"></div>
         </div>
     </div>
 
@@ -1315,6 +1376,86 @@
         </div>
     </div>
 
+    <!-- HR Notes Modal -->
+    <div class="modal-overlay" id="notesModal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2 id="notesModalTitle">Interview Notes</h2>
+                <button class="modal-close" id="notesModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="notesCandidateInfo" style="padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 0.75rem; margin-bottom: 1.5rem;">
+                    <h4 id="notesCandidateName" style="margin: 0 0 0.25rem 0;"></h4>
+                    <span id="notesCandidateEmail" style="color: rgba(255,255,255,0.6); font-size: 0.9rem;"></span>
+                </div>
+                
+                <!-- Existing Notes -->
+                <div id="existingNotes" style="margin-bottom: 1.5rem; max-height: 200px; overflow-y: auto;"></div>
+                
+                <!-- Add New Note Form -->
+                <form id="addNoteForm" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 0.75rem; padding: 1.25rem;">
+                    <h4 style="margin: 0 0 1rem 0; color: #60a5fa; font-size: 0.95rem;">Add Interview Note</h4>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem;">Note Type</label>
+                            <select id="noteFeedbackType" style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 0.4rem; color: white;">
+                                <option value="interview">Interview</option>
+                                <option value="screening">Phone Screening</option>
+                                <option value="general">General Note</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem;">Role Fit Score (1-10)</label>
+                            <input type="number" id="noteRoleFitScore" min="1" max="10" placeholder="7" style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 0.4rem; color: white;">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem;">Strengths</label>
+                        <textarea id="noteStrengths" rows="2" placeholder="Key strengths observed..." style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 0.4rem; color: white; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem;">Areas for Improvement / Weaknesses</label>
+                        <textarea id="noteWeaknesses" rows="2" placeholder="Areas that need development..." style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 0.4rem; color: white; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem;">Missing Skills / Requirements</label>
+                        <textarea id="noteMissingReqs" rows="2" placeholder="Skills or qualifications the candidate is lacking..." style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 0.4rem; color: white; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem;">Recommendation</label>
+                            <select id="noteRecommendation" style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 0.4rem; color: white;">
+                                <option value="">Select...</option>
+                                <option value="hire">Strong Hire</option>
+                                <option value="maybe">Maybe / Needs More Info</option>
+                                <option value="reject">Reject</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem;">Additional Notes</label>
+                        <textarea id="noteAdditional" rows="3" placeholder="Any other observations, concerns, or follow-up items..." style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 0.4rem; color: white; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+                        <button type="button" id="cancelNoteBtn" style="padding: 0.6rem 1.25rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 0.5rem; color: white; cursor: pointer;">Cancel</button>
+                        <button type="submit" style="padding: 0.6rem 1.25rem; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border: none; border-radius: 0.5rem; color: white; cursor: pointer; font-weight: 500;">Save Note</button>
+                    </div>
+                </form>
+                
+                <p style="margin-top: 1rem; font-size: 0.8rem; color: rgba(255,255,255,0.5); text-align: center;">
+                    📧 Notes on weaknesses and missing requirements will be used in personalized rejection emails.
+                </p>
+            </div>
+        </div>
+    </div>
+
     <!-- HR Chat Assistant -->
     <button class="hr-chat-toggle" id="hrChatToggle" title="HR Assistant" style="display:none" data-dashboard-only="1">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1327,11 +1468,14 @@
             <button class="hr-chat-close" id="hrChatClose">&times;</button>
         </div>
         <div class="hr-chat-messages" id="hrChatMessages"></div>
-        <div class="hr-chat-input-wrap">
-            <input type="text" id="hrChatInput"
-                placeholder="e.g. Summarize rejected candidates for Satellite Engineer...">
+        <div class="hr-chat-input-wrap" style="display: flex; gap: 0.5rem; align-items: center;">
+            <input type="text" id="hrChatInput" style="flex: 1;"
+                placeholder="Type or click mic to speak...">
+            <!-- Voice button will be added by voice-chat.js -->
         </div>
     </div>
+    
+    <script src="voice-chat.js"></script>
 
     <!-- Add Job Modal -->
     <div class="modal-overlay" id="addJobModal">
@@ -1539,7 +1683,7 @@
                     email: result.email,
                     name: email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
                 };
-                showDashboard();
+            showDashboard();
             } catch (error) {
                 document.getElementById('loginError').textContent = error.message || 'Login failed. Please check your credentials.';
                 document.getElementById('loginError').style.display = 'block';
@@ -1844,6 +1988,15 @@
             const input = document.getElementById('hrChatInput');
             const messages = document.getElementById('hrChatMessages');
 
+            // Initialize Voice Chat for HR
+            let hrVoiceChat = null;
+            if (typeof initVoiceChatWidget === 'function') {
+                hrVoiceChat = initVoiceChatWidget('hrChatInput', 'hrChatMessages', {
+                    apiKey: 'VF.DM.697f067be3fe14c39580e132.p8qmZZk2CHACMe7v',
+                    projectId: '697ec5f2f3b8565c0e66aac3'
+                });
+            }
+
             const hrResponses = {
                 default: 'I can help with: "Summarize talent orbit for [role]", "Who almost made it?", "Orbit 3 candidates?"',
                 summarize: (role) => {
@@ -1857,15 +2010,25 @@
             toggle?.addEventListener('click', () => panel.classList.toggle('open'));
             closeBtn?.addEventListener('click', () => panel.classList.remove('open'));
 
-            const addBotMsg = (text) => {
+            const addBotMsg = (text, speak = true) => {
                 const div = document.createElement('div');
                 div.className = 'hr-chat-msg';
                 div.innerHTML = '<div class="bubble">' + text + '</div>';
                 messages.appendChild(div);
                 messages.scrollTop = messages.scrollHeight;
+                
+                // Add speak button
+                if (typeof addSpeakButton === 'function') {
+                    addSpeakButton(div.querySelector('.bubble'), text);
+                }
+                
+                // Auto-speak response
+                if (speak && hrVoiceChat) {
+                    hrVoiceChat.speak(text);
+                }
             };
 
-            if (messages && !messages.innerHTML.trim()) addBotMsg('Hi! I\'m Orion HR Assistant. Ask me about the Talent Orbit, Orbit 3 candidates, or who to fast-track.');
+            if (messages && !messages.innerHTML.trim()) addBotMsg('Hi! I\'m Orion HR Assistant. Ask me about the Talent Orbit, Orbit 3 candidates, or who to fast-track.', false);
 
             input?.addEventListener('keydown', async (e) => {
                 if (e.key !== 'Enter') return;
@@ -1887,7 +2050,7 @@
                 } catch (error) {
                     // Fallback to local responses
                     const qLower = q.toLowerCase();
-                    let reply = hrResponses.default;
+                let reply = hrResponses.default;
                     if (qLower.includes('summarize') || (qLower.includes('talent') && qLower.includes('role'))) {
                         reply = hrResponses.summarize(q.match(/for\s+([\w\s]+)/i)?.[1]?.trim() || q.match(/(?:satellite|mission|software|developer|engineer|specialist)/i)?.[0] || '');
                     } else if (qLower.includes('almost') || qLower.includes('orbit 2') || qLower.includes('orbit 3')) {
@@ -1930,9 +2093,9 @@
             const addBtn = document.getElementById('addJobBtn');
             if (addBtn) {
                 addBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.getElementById('addJobModal').classList.add('show');
-                });
+                e.preventDefault();
+                document.getElementById('addJobModal').classList.add('show');
+            });
             }
         }
 
@@ -2007,14 +2170,20 @@
                     requireAuth: true,
                     method: 'GET'
                 });
+                
+                console.log('Loaded applications:', jobApps);
+                
                 // Sort by combined_score or technical_score
                 jobApps.sort((a, b) => (b.combined_score || b.technical_score || 0) - (a.combined_score || a.technical_score || 0));
 
-                document.getElementById('applicantsModalTitle').textContent = `Applicants — ${job ? job.title : 'Position'}`;
+            document.getElementById('applicantsModalTitle').textContent = `Applicants — ${job ? job.title : 'Position'}`;
 
                 if (jobApps.length === 0) {
                     document.getElementById('applicantsList').innerHTML = '<p style="color: rgba(255,255,255,0.6);">No applicants yet.</p>';
+                    document.getElementById('topNControls').style.display = 'none';
+                    currentApplicantsList = [];
                 } else {
+                    document.getElementById('topNControls').style.display = 'flex';
                     // Load candidate details for each application
                     const applicantsWithDetails = await Promise.all(jobApps.map(async (app, i) => {
                         try {
@@ -2037,20 +2206,86 @@
                         }
                     }));
 
+                    // Store for bulk actions
+                    currentApplicantsList = applicantsWithDetails;
+                    
+                    // Update the max value of the input
+                    document.getElementById('topNInput').max = applicantsWithDetails.length;
+                    if (parseInt(document.getElementById('topNInput').value) > applicantsWithDetails.length) {
+                        document.getElementById('topNInput').value = applicantsWithDetails.length;
+                    }
+
                     document.getElementById('applicantsList').innerHTML = applicantsWithDetails.map(a => `
-                        <div class="applicant-card">
-                            <span class="applicant-rank">#${a.rank}</span>
-                            <h4>${a.name}</h4>
-                            <div class="applicant-email">${a.email}</div>
-                            <div class="applicant-score">Score: ${a.score}%</div>
-                            <div class="applicant-flags">
-                                <strong>Status:</strong> ${a.status.replace('_', ' ')}<br>
-                                ${a.eligibility_details ? `<strong>Skills:</strong> ${(a.eligibility_details.matched_skills || []).join(', ') || 'N/A'}` : ''}
+                        <div class="applicant-card" style="position: relative; padding: 1.25rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 1rem; margin-bottom: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                <span class="applicant-rank" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; padding: 0.5rem 0.75rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.9rem;">#${a.rank}</span>
+                                <div style="flex: 1;">
+                                    <h4 style="margin: 0; font-size: 1.1rem;">${a.name}</h4>
+                                    <div class="applicant-email" style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">${a.email}</div>
+                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: ${a.score >= 70 ? '#22c55e' : a.score >= 50 ? '#f59e0b' : '#ef4444'};">${Math.round(a.score)}%</div>
+                                    <div style="font-size: 0.75rem; color: rgba(255,255,255,0.5);">Combined</div>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+                                <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 0.5rem; padding: 0.75rem; text-align: center;">
+                                    <div style="font-size: 1.1rem; font-weight: 600; color: #60a5fa;">${a.technical_score !== null && a.technical_score !== undefined ? Math.round(a.technical_score) + '%' : 'N/A'}</div>
+                                    <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);">Technical</div>
+                                </div>
+                                <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 0.5rem; padding: 0.75rem; text-align: center; cursor: pointer;" onclick="toggleBehavioralDetails('${a.id}')">
+                                    <div style="font-size: 1.1rem; font-weight: 600; color: #a78bfa;">${a.behavioral_score !== null && a.behavioral_score !== undefined ? Math.round(a.behavioral_score) + '%' : '<span style="font-size:0.8rem;">Pending</span>'}</div>
+                                    <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);">Behavioral ${a.behavioral_score !== null ? '▼' : ''}</div>
+                                </div>
+                                <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 0.5rem; padding: 0.75rem; text-align: center;">
+                                    <div style="font-size: 0.85rem; font-weight: 500; color: ${a.eligibility_check_passed ? '#22c55e' : '#ef4444'};">${a.eligibility_check_passed ? '✓ Eligible' : '✗ Ineligible'}</div>
+                                    <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);">Skills Check</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Behavioral Feedback Details (hidden by default) -->
+                            <div id="behavioral-details-${a.id}" style="display: none; margin-bottom: 1rem; padding: 1rem; background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 0.75rem;">
+                                <div style="font-size: 0.8rem; font-weight: 600; color: #a78bfa; margin-bottom: 0.75rem;">Behavioral Assessment Breakdown</div>
+                                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-bottom: 0.75rem;">
+                                    <div style="text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem;">
+                                        <div style="font-size: 0.9rem; font-weight: 600; color: #60a5fa;">${a.parameter_scores?.problem_solving || '--'}%</div>
+                                        <div style="font-size: 0.65rem; color: rgba(255,255,255,0.5);">Problem Solving</div>
+                                    </div>
+                                    <div style="text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem;">
+                                        <div style="font-size: 0.9rem; font-weight: 600; color: #22c55e;">${a.parameter_scores?.communication || '--'}%</div>
+                                        <div style="font-size: 0.65rem; color: rgba(255,255,255,0.5);">Communication</div>
+                                    </div>
+                                    <div style="text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem;">
+                                        <div style="font-size: 0.9rem; font-weight: 600; color: #f59e0b;">${a.parameter_scores?.teamwork || '--'}%</div>
+                                        <div style="font-size: 0.65rem; color: rgba(255,255,255,0.5);">Teamwork</div>
+                                    </div>
+                                    <div style="text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem;">
+                                        <div style="font-size: 0.9rem; font-weight: 600; color: #ec4899;">${a.parameter_scores?.adaptability || '--'}%</div>
+                                        <div style="font-size: 0.65rem; color: rgba(255,255,255,0.5);">Adaptability</div>
+                                    </div>
+                                    <div style="text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem;">
+                                        <div style="font-size: 0.9rem; font-weight: 600; color: #8b5cf6;">${a.parameter_scores?.leadership || '--'}%</div>
+                                        <div style="font-size: 0.65rem; color: rgba(255,255,255,0.5);">Leadership</div>
+                                    </div>
+                                </div>
+                                ${a.feedback_summary ? `<div style="font-size: 0.85rem; color: #d1d5db; line-height: 1.5; padding: 0.75rem; background: rgba(0,0,0,0.2); border-radius: 0.5rem;"><strong style="color: #a78bfa;">AI Summary:</strong> ${a.feedback_summary}</div>` : ''}
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                                <span style="padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.8rem; background: ${a.status === 'applied' ? 'rgba(59,130,246,0.2)' : a.status === 'shortlisted' ? 'rgba(34,197,94,0.2)' : a.status === 'interview_scheduled' ? 'rgba(251,191,36,0.2)' : a.status === 'rejected' ? 'rgba(239,68,68,0.2)' : 'rgba(255,255,255,0.1)'}; color: ${a.status === 'applied' ? '#60a5fa' : a.status === 'shortlisted' ? '#22c55e' : a.status === 'interview_scheduled' ? '#fbbf24' : a.status === 'rejected' ? '#ef4444' : 'rgba(255,255,255,0.7)'};">
+                                    ${a.status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                </span>
+                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                    <button onclick="openNotesModal('${a.id}', '${a.name.replace(/'/g, "\\'")}', '${a.email}')" style="padding: 0.4rem 0.8rem; background: rgba(139,92,246,0.2); border: 1px solid rgba(139,92,246,0.4); color: #a78bfa; border-radius: 0.4rem; cursor: pointer; font-size: 0.8rem;">📝 Notes</button>
+                                    <button onclick="scheduleInterview('${a.id}', '${a.name.replace(/'/g, "\\'")}', '${a.email}')" style="padding: 0.4rem 0.8rem; background: rgba(251,191,36,0.2); border: 1px solid rgba(251,191,36,0.4); color: #fbbf24; border-radius: 0.4rem; cursor: pointer; font-size: 0.8rem;" ${a.status === 'rejected' ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}>📅 Interview</button>
+                                    <button onclick="updateApplicationStatus('${a.id}', 'shortlisted')" style="padding: 0.4rem 0.8rem; background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.4); color: #22c55e; border-radius: 0.4rem; cursor: pointer; font-size: 0.8rem;" ${a.status === 'shortlisted' || a.status === 'rejected' ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}>Shortlist</button>
+                                    <button onclick="updateApplicationStatus('${a.id}', 'rejected')" style="padding: 0.4rem 0.8rem; background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.4); color: #ef4444; border-radius: 0.4rem; cursor: pointer; font-size: 0.8rem;" ${a.status === 'rejected' ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}>Reject</button>
+                                </div>
                             </div>
                         </div>
                     `).join('');
                 }
-                document.getElementById('applicantsModal').classList.add('show');
+            document.getElementById('applicantsModal').classList.add('show');
             } catch (error) {
                 alert('Failed to load applicants: ' + error.message);
             }
@@ -2060,6 +2295,343 @@
             document.getElementById('applicantsModal').classList.remove('show');
         });
 
+        // Store current applicants for bulk actions
+        let currentApplicantsList = [];
+
+        // Shortlist Top N candidates
+        document.getElementById('shortlistTopNBtn').addEventListener('click', async () => {
+            const topN = parseInt(document.getElementById('topNInput').value) || 3;
+            const toShortlist = currentApplicantsList.slice(0, topN).filter(a => a.status !== 'shortlisted' && a.status !== 'rejected');
+            
+            if (toShortlist.length === 0) {
+                alert('No candidates to shortlist (they may already be shortlisted or rejected)');
+                return;
+            }
+            
+            if (!confirm(`Shortlist the top ${toShortlist.length} candidate(s)?`)) return;
+            
+            const btn = document.getElementById('shortlistTopNBtn');
+            btn.textContent = 'Processing...';
+            btn.disabled = true;
+            
+            try {
+                for (const app of toShortlist) {
+                    await api.updateApplicationStatus(app.id, 'shortlisted');
+                }
+                alert(`Successfully shortlisted ${toShortlist.length} candidate(s)!`);
+                document.getElementById('applicantsBtn').click(); // Refresh
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                btn.textContent = '✓ Shortlist Top';
+                btn.disabled = false;
+            }
+        });
+
+        // Reject candidates not in top N
+        document.getElementById('rejectRestBtn').addEventListener('click', async () => {
+            const topN = parseInt(document.getElementById('topNInput').value) || 3;
+            const toReject = currentApplicantsList.slice(topN).filter(a => a.status !== 'rejected' && a.status !== 'shortlisted');
+            
+            if (toReject.length === 0) {
+                alert('No candidates to reject (they may already be processed)');
+                return;
+            }
+            
+            if (!confirm(`Reject ${toReject.length} candidate(s) ranked below top ${topN}?`)) return;
+            
+            const btn = document.getElementById('rejectRestBtn');
+            btn.textContent = 'Processing...';
+            btn.disabled = true;
+            
+            try {
+                for (const app of toReject) {
+                    await api.updateApplicationStatus(app.id, 'rejected');
+                }
+                alert(`Rejected ${toReject.length} candidate(s)`);
+                document.getElementById('applicantsBtn').click(); // Refresh
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                btn.textContent = '✗ Reject Others';
+                btn.disabled = false;
+            }
+        });
+
+        // Update application status (shortlist/reject)
+        async function updateApplicationStatus(applicationId, newStatus) {
+            try {
+                await api.updateApplicationStatus(applicationId, newStatus);
+                // Refresh the applicants list
+                document.getElementById('applicantsBtn').click();
+            } catch (error) {
+                alert('Failed to update status: ' + error.message);
+            }
+        }
+
+        // Toggle behavioral details visibility
+        function toggleBehavioralDetails(applicationId) {
+            const details = document.getElementById(`behavioral-details-${applicationId}`);
+            if (details) {
+                details.style.display = details.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        // ============ HR NOTES FUNCTIONALITY ============
+        
+        let currentNotesApplicationId = null;
+        let currentNotesCandidate = { name: '', email: '' };
+
+        async function openNotesModal(applicationId, candidateName, candidateEmail) {
+            currentNotesApplicationId = applicationId;
+            currentNotesCandidate = { name: candidateName, email: candidateEmail };
+            
+            document.getElementById('notesCandidateName').textContent = candidateName;
+            document.getElementById('notesCandidateEmail').textContent = candidateEmail;
+            document.getElementById('notesModalTitle').textContent = `Interview Notes — ${candidateName}`;
+            
+            // Reset form
+            document.getElementById('addNoteForm').reset();
+            
+            // Load existing notes
+            await loadExistingNotes(applicationId);
+            
+            document.getElementById('notesModal').classList.add('show');
+        }
+
+        async function loadExistingNotes(applicationId) {
+            const container = document.getElementById('existingNotes');
+            container.innerHTML = '<p style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">Loading notes...</p>';
+            
+            try {
+                const notes = await api.getApplicationFeedback(applicationId);
+                
+                if (notes.length === 0) {
+                    container.innerHTML = '<p style="color: rgba(255,255,255,0.5); font-size: 0.9rem; text-align: center; padding: 1rem;">No notes yet. Add your first note below.</p>';
+                    return;
+                }
+                
+                container.innerHTML = notes.map(note => `
+                    <div class="note-card" style="padding: 1rem; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 0.75rem; margin-bottom: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                            <div>
+                                <span style="color: #a78bfa; font-weight: 600; font-size: 0.85rem;">${note.feedback_type ? note.feedback_type.replace(/\b\w/g, l => l.toUpperCase()) : 'Note'}</span>
+                                <span style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-left: 0.5rem;">${note.created_at ? new Date(note.created_at).toLocaleDateString() : ''}</span>
+                            </div>
+                            ${note.role_fit_score ? `<span style="background: ${note.role_fit_score >= 7 ? 'rgba(34,197,94,0.2)' : note.role_fit_score >= 5 ? 'rgba(251,191,36,0.2)' : 'rgba(239,68,68,0.2)'}; color: ${note.role_fit_score >= 7 ? '#22c55e' : note.role_fit_score >= 5 ? '#fbbf24' : '#ef4444'}; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.8rem; font-weight: 600;">${note.role_fit_score}/10</span>` : ''}
+                        </div>
+                        ${note.strengths ? `<div style="margin-bottom: 0.5rem;"><span style="color: #22c55e; font-size: 0.75rem; font-weight: 500;">✓ Strengths:</span> <span style="color: rgba(255,255,255,0.8); font-size: 0.85rem;">${note.strengths}</span></div>` : ''}
+                        ${note.weaknesses ? `<div style="margin-bottom: 0.5rem;"><span style="color: #f59e0b; font-size: 0.75rem; font-weight: 500;">⚠ Weaknesses:</span> <span style="color: rgba(255,255,255,0.8); font-size: 0.85rem;">${note.weaknesses}</span></div>` : ''}
+                        ${note.missing_requirements ? `<div style="margin-bottom: 0.5rem;"><span style="color: #ef4444; font-size: 0.75rem; font-weight: 500;">✗ Missing:</span> <span style="color: rgba(255,255,255,0.8); font-size: 0.85rem;">${note.missing_requirements}</span></div>` : ''}
+                        ${note.recommendation ? `<div style="margin-bottom: 0.5rem;"><span style="color: #60a5fa; font-size: 0.75rem; font-weight: 500;">Recommendation:</span> <span style="color: ${note.recommendation === 'hire' ? '#22c55e' : note.recommendation === 'reject' ? '#ef4444' : '#fbbf24'}; font-size: 0.85rem; font-weight: 500;">${note.recommendation.replace(/\b\w/g, l => l.toUpperCase())}</span></div>` : ''}
+                        ${note.additional_notes ? `<div style="color: rgba(255,255,255,0.7); font-size: 0.85rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.1);">${note.additional_notes}</div>` : ''}
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                            <span style="color: rgba(255,255,255,0.4); font-size: 0.75rem;">By: ${note.hr_user_name || 'HR Team'}</span>
+                            <button onclick="deleteNote('${note.id}')" style="background: none; border: none; color: rgba(239,68,68,0.7); font-size: 0.75rem; cursor: pointer;">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                container.innerHTML = '<p style="color: #ef4444; font-size: 0.9rem;">Failed to load notes: ' + error.message + '</p>';
+            }
+        }
+
+        async function deleteNote(noteId) {
+            if (!confirm('Delete this note?')) return;
+            
+            try {
+                await api.deleteFeedback(noteId);
+                await loadExistingNotes(currentNotesApplicationId);
+            } catch (error) {
+                alert('Failed to delete note: ' + error.message);
+            }
+        }
+
+        // Notes modal close
+        document.getElementById('notesModalClose')?.addEventListener('click', () => {
+            document.getElementById('notesModal').classList.remove('show');
+        });
+        
+        document.getElementById('cancelNoteBtn')?.addEventListener('click', () => {
+            document.getElementById('notesModal').classList.remove('show');
+        });
+
+        // Add note form submission
+        document.getElementById('addNoteForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const feedbackData = {
+                feedback_type: document.getElementById('noteFeedbackType').value,
+                role_fit_score: document.getElementById('noteRoleFitScore').value ? parseInt(document.getElementById('noteRoleFitScore').value) : null,
+                strengths: document.getElementById('noteStrengths').value.trim() || null,
+                weaknesses: document.getElementById('noteWeaknesses').value.trim() || null,
+                missing_requirements: document.getElementById('noteMissingReqs').value.trim() || null,
+                recommendation: document.getElementById('noteRecommendation').value || null,
+                additional_notes: document.getElementById('noteAdditional').value.trim() || null
+            };
+            
+            // Require at least one field
+            if (!feedbackData.strengths && !feedbackData.weaknesses && !feedbackData.missing_requirements && !feedbackData.additional_notes) {
+                alert('Please fill in at least one field (strengths, weaknesses, missing requirements, or additional notes).');
+                return;
+            }
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.textContent = 'Saving...';
+            submitBtn.disabled = true;
+            
+            try {
+                await api.createFeedback(currentNotesApplicationId, feedbackData);
+                document.getElementById('addNoteForm').reset();
+                await loadExistingNotes(currentNotesApplicationId);
+                alert('Note saved! This feedback will be used in rejection emails if applicable.');
+            } catch (error) {
+                alert('Failed to save note: ' + error.message);
+            } finally {
+                submitBtn.textContent = 'Save Note';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // ============ END HR NOTES ============
+
+        // Scheduled interviews storage (in production, this would be from backend)
+        let scheduledInterviews = JSON.parse(localStorage.getItem('scheduledInterviews') || '[]');
+
+        // Schedule interview modal
+        async function scheduleInterview(applicationId, candidateName, candidateEmail) {
+            const interviewDate = prompt(`Schedule interview for ${candidateName}\n\nEnter date and time (e.g., 2026-02-15 14:00):`);
+            if (!interviewDate) return;
+
+            const interviewType = prompt('Interview type:\n1. Video Call\n2. Phone Call\n3. In-Person\n\nEnter 1, 2, or 3:', '1');
+            const types = { '1': 'Video Call', '2': 'Phone Call', '3': 'In-Person' };
+            const selectedType = types[interviewType] || 'Video Call';
+
+            const interviewer = prompt('Interviewer name(s):', 'HR Team');
+            if (!interviewer) return;
+
+            const meetingLink = selectedType === 'Video Call' ? prompt('Meeting link (optional):', 'https://meet.google.com/') : '';
+
+            try {
+                // Schedule via API
+                await api.scheduleInterview(applicationId, interviewDate, selectedType, interviewer, meetingLink || null);
+                
+                // Also save locally for the interviews tab
+                const interview = {
+                    id: Date.now().toString(),
+                    applicationId,
+                    candidateName,
+                    candidateEmail,
+                    scheduledAt: interviewDate,
+                    type: selectedType,
+                    interviewer,
+                    meetingLink,
+                    status: 'scheduled',
+                    createdAt: new Date().toISOString()
+                };
+
+                scheduledInterviews.push(interview);
+                localStorage.setItem('scheduledInterviews', JSON.stringify(scheduledInterviews));
+
+                alert(`Interview scheduled for ${candidateName} on ${interviewDate}`);
+                
+                // Refresh the applicants list to show updated status
+                document.getElementById('applicantsBtn').click();
+                refreshInterviews();
+            } catch (error) {
+                alert('Failed to schedule interview: ' + error.message);
+            }
+        }
+
+        // Refresh interviews list
+        function refreshInterviews() {
+            scheduledInterviews = JSON.parse(localStorage.getItem('scheduledInterviews') || '[]');
+            
+            const now = new Date();
+            const today = now.toDateString();
+            const weekEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+            // Calculate stats
+            let todayCount = 0, weekCount = 0, completedCount = 0, pendingCount = 0;
+            
+            scheduledInterviews.forEach(i => {
+                const iDate = new Date(i.scheduledAt);
+                if (i.status === 'completed') completedCount++;
+                else {
+                    pendingCount++;
+                    if (iDate.toDateString() === today) todayCount++;
+                    if (iDate <= weekEnd) weekCount++;
+                }
+            });
+
+            document.getElementById('interviewsToday').textContent = todayCount;
+            document.getElementById('interviewsThisWeek').textContent = weekCount;
+            document.getElementById('interviewsCompleted').textContent = completedCount;
+            document.getElementById('interviewsPending').textContent = pendingCount;
+
+            // Render interviews list
+            const list = document.getElementById('interviewsList');
+            const upcoming = scheduledInterviews
+                .filter(i => i.status !== 'completed')
+                .sort((a, b) => new Date(a.scheduledAt) - new Date(b.scheduledAt));
+
+            if (upcoming.length === 0) {
+                list.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: rgba(255,255,255,0.5);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📅</div>
+                        <p>No interviews scheduled yet.</p>
+                        <p style="font-size: 0.85rem;">Schedule interviews from the applicant cards in Open Positions.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = upcoming.map(i => {
+                const interviewDate = new Date(i.scheduledAt);
+                const isPast = interviewDate < now;
+                
+                return `
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: ${isPast ? 'rgba(239, 68, 68, 0.1)' : 'rgba(255,255,255,0.03)'}; border: 1px solid ${isPast ? 'rgba(239, 68, 68, 0.3)' : 'rgba(255,255,255,0.1)'}; border-radius: 0.75rem; margin-bottom: 0.75rem;">
+                        <div style="width: 60px; text-align: center; flex-shrink: 0;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: ${isPast ? '#ef4444' : '#60a5fa'};">${interviewDate.getDate()}</div>
+                            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.5);">${interviewDate.toLocaleString('en-US', { month: 'short' })}</div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; color: #f3f4f6; margin-bottom: 0.25rem;">${i.candidateName}</div>
+                            <div style="font-size: 0.85rem; color: rgba(255,255,255,0.6);">${i.type} • ${interviewDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</div>
+                            <div style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">With: ${i.interviewer}</div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            ${i.meetingLink ? `<a href="${i.meetingLink}" target="_blank" style="padding: 0.4rem 0.8rem; background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.4); color: #60a5fa; border-radius: 0.4rem; text-decoration: none; font-size: 0.8rem;">Join</a>` : ''}
+                            <button onclick="markInterviewComplete('${i.id}')" style="padding: 0.4rem 0.8rem; background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.4); color: #22c55e; border-radius: 0.4rem; cursor: pointer; font-size: 0.8rem;">✓ Done</button>
+                            <button onclick="cancelInterview('${i.id}')" style="padding: 0.4rem 0.8rem; background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.4); color: #ef4444; border-radius: 0.4rem; cursor: pointer; font-size: 0.8rem;">Cancel</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Mark interview as complete
+        function markInterviewComplete(interviewId) {
+            scheduledInterviews = scheduledInterviews.map(i => 
+                i.id === interviewId ? {...i, status: 'completed'} : i
+            );
+            localStorage.setItem('scheduledInterviews', JSON.stringify(scheduledInterviews));
+            refreshInterviews();
+        }
+
+        // Cancel interview
+        function cancelInterview(interviewId) {
+            if (!confirm('Cancel this interview?')) return;
+            scheduledInterviews = scheduledInterviews.filter(i => i.id !== interviewId);
+            localStorage.setItem('scheduledInterviews', JSON.stringify(scheduledInterviews));
+            refreshInterviews();
+        }
+
+        // Load interviews on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshInterviews();
+        });
 
         document.getElementById('addJobModalClose').addEventListener('click', () => {
             document.getElementById('addJobModal').classList.remove('show');
@@ -2111,10 +2683,10 @@
                         is_active: true
                     })
                 });
-                jobs.push(newJob);
-                document.getElementById('addJobForm').reset();
-                document.getElementById('addJobModal').classList.remove('show');
-                renderJobs();
+            jobs.push(newJob);
+            document.getElementById('addJobForm').reset();
+            document.getElementById('addJobModal').classList.remove('show');
+            renderJobs();
             } catch (error) {
                 alert('Failed to create job: ' + error.message);
                 submitBtn.textContent = originalText;
