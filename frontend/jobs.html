@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Jobs - SPACE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Background removed in favor of WebGL Galaxy */
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: color 0.3s;
+        }
+
+        .back-btn:hover {
+            color: white;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px dashed rgba(59, 130, 246, 0.4);
+            border-radius: 2rem;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-section::before {
+            content: '';
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            top: 20%;
+            right: 10%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='1.5' opacity='0.4'%3E%3Cpath d='M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2'/%3E%3Cpath d='m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2'/%3E%3Cpath d='M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0'/%3E%3Cpath d='M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5'/%3E%3C/svg%3E") no-repeat center;
+            animation: rocketFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes rocketFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(-20deg);
+            }
+
+            50% {
+                transform: translateY(-30px) rotate(-15deg);
+            }
+        }
+
+        .upload-section.has-file {
+            border-color: rgba(34, 197, 94, 0.6);
+            background:
+                radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.1), transparent 40%),
+                rgba(15, 42, 23, 0.6);
+            animation: successPulse 2s ease-in-out;
+        }
+
+        @keyframes successPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        .upload-section:not(.has-file):hover {
+            border-color: rgba(59, 130, 246, 0.8);
+            background:
+                radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15), transparent 60%),
+                rgba(15, 23, 42, 0.8);
+            transform: scale(1.01);
+        }
+
+        .upload-icon {
+            margin-bottom: 1rem;
+            display: inline-flex;
+            animation: iconBob 2s ease-in-out infinite;
+        }
+
+        .upload-icon svg {
+            width: 5rem;
+            height: 5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes iconBob {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .upload-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-desc {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            display: none;
+        }
+
+        .upload-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .file-info {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .file-info.show {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Jobs Grid */
+        .jobs-section {
+            opacity: 1;
+            pointer-events: auto;
+            transition: opacity 0.5s;
+        }
+
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .job-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Cosmic glow effect */
+        .job-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .job-card:hover::before {
+            opacity: 1;
+            animation: cosmicRotate 8s linear infinite;
+        }
+
+        @keyframes cosmicRotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .job-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(59, 130, 246, 0.6);
+            box-shadow:
+                0 20px 40px rgba(59, 130, 246, 0.3),
+                0 0 60px rgba(139, 92, 246, 0.2);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .job-icon {
+            width: 3rem;
+            height: 3rem;
+            transition: transform 0.3s ease;
+        }
+
+        .job-icon svg {
+            width: 100%;
+            height: 100%;
+            color: #60a5fa;
+        }
+
+        .job-card:hover .job-icon {
+            transform: scale(1.2) rotate(10deg);
+            filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.8));
+        }
+
+        .job-badge {
+            padding: 0.25rem 0.75rem;
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            color: #60a5fa;
+        }
+
+        .job-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .job-company {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1rem;
+        }
+
+        .job-details {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .job-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .job-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .apply-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .apply-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .user-badge {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .user-badge svg {
+            width: 20px;
+            height: 20px;
+            color: #3b82f6;
+        }
+
+        .user-badge strong {
+            color: #3b82f6;
+        }
+
+        .orion-chat-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orion-chat-toggle svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+
+        .orion-chat-panel {
+            position: fixed;
+            bottom: 90px;
+            right: 24px;
+            width: 380px;
+            max-height: 480px;
+            background: rgba(17, 24, 39, 0.98);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .orion-chat-panel.open {
+            display: flex;
+        }
+
+        .orion-chat-header {
+            padding: 1rem 1.25rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .orion-chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orion-chat-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+
+        .orion-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            max-height: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .orion-msg {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            max-width: 85%;
+        }
+
+        .orion-msg.bot {
+            background: rgba(59, 130, 246, 0.15);
+            border-left: 3px solid #3b82f6;
+            align-self: flex-start;
+        }
+
+        .orion-msg.user {
+            background: rgba(255, 255, 255, 0.08);
+            align-self: flex-end;
+        }
+
+        .orion-chat-input-area {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .orion-chat-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .login-modal.show {
+            display: flex;
+        }
+
+        .modal-container {
+            width: 320px;
+            border-radius: 0.75rem;
+            background-color: rgba(17, 24, 39, 1);
+            padding: 2rem;
+            color: rgba(243, 244, 246, 1);
+            border: 1px solid rgba(55, 65, 81, 1);
+            animation: modalSlide 0.3s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-container .title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-container .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .modal-container .input-group label {
+            display: block;
+            color: rgba(156, 163, 175, 1);
+            margin-bottom: 4px;
+            font-size: 0.875rem;
+        }
+
+        .modal-container .input-group input {
+            width: 100%;
+            border-radius: 0.375rem;
+            border: 1px solid rgba(55, 65, 81, 1);
+            background-color: rgba(17, 24, 39, 1);
+            padding: 0.75rem 1rem;
+            color: rgba(243, 244, 246, 1);
+            outline: none;
+        }
+
+        .modal-container .input-group input:focus {
+            border-color: rgba(167, 139, 250, 1);
+        }
+
+        .modal-container .sign-btn {
+            display: block;
+            width: 100%;
+            background-color: rgba(167, 139, 250, 1);
+            padding: 0.75rem;
+            text-align: center;
+            color: rgba(17, 24, 39, 1);
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .modal-container .sign-btn:hover {
+            background-color: rgba(139, 92, 246, 1);
+        }
+
+        .modal-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.25rem;
+        }
+
+        .modal-tab {
+            flex: 1;
+            padding: 10px;
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid rgba(55, 65, 81, 1);
+            border-radius: 0.375rem;
+            color: rgba(156, 163, 175, 1);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .modal-tab.active {
+            background-color: rgba(167, 139, 250, 0.2);
+            border-color: rgba(167, 139, 250, 1);
+            color: white;
+        }
+
+        .modal-form {
+            display: none;
+        }
+
+        .modal-form.active {
+            display: block;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: rgba(156, 163, 175, 1);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: white;
+        }
+
+        .modal-switch {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: rgba(156, 163, 175, 1);
+        }
+
+        .modal-switch a {
+            color: rgba(167, 139, 250, 1);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-switch a:hover {
+            text-decoration: underline;
+        }
+
+        .status-btn {
+            position: fixed;
+            top: 30px;
+            right: 220px;
+            /* Positioned to the left of user badge */
+            padding: 12px 24px;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-btn:hover {
+            background: rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .status-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Application Form Modal */
+        .application-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            backdrop-filter: blur(10px);
+        }
+
+        .application-modal.show {
+            display: flex;
+        }
+
+        .application-form-container {
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 1.5rem;
+            background: rgba(17, 24, 39, 0.98);
+            padding: 2.5rem;
+            color: rgba(243, 244, 246, 1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: modalSlide 0.3s ease-out;
+            position: relative;
+        }
+
+        .application-form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .application-form-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .application-close-btn {
+            background: none;
+            border: none;
+            color: rgba(156, 163, 175, 1);
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .application-close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .job-preview {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .job-preview-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #60a5fa;
+        }
+
+        .job-preview-details {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: rgba(156, 163, 175, 1);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(55, 65, 81, 1);
+            background-color: rgba(15, 23, 42, 0.8);
+            padding: 0.75rem 1rem;
+            color: rgba(243, 244, 246, 1);
+            outline: none;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: rgba(59, 130, 246, 0.8);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            padding: 0.875rem 1.5rem;
+            background: rgba(55, 65, 81, 0.8);
+            border: 1px solid rgba(55, 65, 81, 1);
+            border-radius: 0.75rem;
+            color: rgba(243, 244, 246, 1);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(75, 85, 99, 0.8);
+        }
+
+        .btn-ai-generate {
+            padding: 0.5rem 1rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 0.5rem;
+            color: #a78bfa;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-ai-generate:hover {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.6);
+        }
+
+        .cv-info {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .cv-info svg {
+            width: 24px;
+            height: 24px;
+            color: #22c55e;
+            flex-shrink: 0;
+        }
+
+        .cv-info-text {
+            flex: 1;
+        }
+
+        .cv-info-title {
+            font-weight: 600;
+            color: #22c55e;
+            margin-bottom: 0.25rem;
+        }
+
+        .cv-info-desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .no-cv-warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            color: #ef4444;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Check Status Button -->
+    <a href="status.html" class="status-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+        </svg>
+        Check Status
+    </a>
+
+    <div class="user-badge" id="userBadge"></div>
+
+    <div class="container">
+        <a href="index.html?home=1" class="back-btn">← Back to Orion</a>
+
+        <div class="page-header">
+            <h1 class="page-title">Explore Career Opportunities</h1>
+            <p style="color: rgba(255, 255, 255, 0.7);">Upload your CV/Resume to unlock personalized job matches</p>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-section" id="upload-section">
+            <div class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                </svg></div>
+            <h2 class="upload-title">Upload Your CV/Resume</h2>
+            <p class="upload-desc">We'll match you with the best opportunities based on your experience</p>
+
+            <div class="file-input-wrapper">
+                <input type="file" id="cv-upload" accept=".pdf,.doc,.docx" onchange="handleFileUpload(event)">
+                <button class="upload-btn" onclick="triggerUpload()">
+                    Choose File
+                </button>
+            </div>
+
+            <div class="file-info" id="file-info">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"
+                    style="width:18px;height:18px;flex-shrink:0">
+                    <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span id="file-name"></span>
+                <button onclick="removeFile()"
+                    style="background: none; border: none; color: #ef4444; cursor: pointer; margin-left: 1rem;">Remove</button>
+            </div>
+        </div>
+
+        <!-- Jobs Section -->
+        <div class="jobs-section" id="jobs-section">
+            <h2 style="margin-bottom: 1.5rem; font-size: 1.8rem;">Available Positions</h2>
+
+            <div class="jobs-grid">
+                <!-- Data will be loaded via API -->
+                <p class="job-description">Loading jobs...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Form Modal -->
+    <div class="application-modal" id="applicationModal">
+        <div class="application-form-container">
+            <div class="application-form-header">
+                <h2 class="application-form-title">Apply for Position</h2>
+                <button class="application-close-btn" onclick="closeApplicationModal()">&times;</button>
+            </div>
+
+            <div id="jobPreview" class="job-preview">
+                <!-- Job details will be populated here -->
+            </div>
+
+            <form id="applicationForm">
+                <div id="cvInfoSection"></div>
+
+                <div class="form-group" id="cvSelectGroup">
+                    <label for="cvSelect">Select CV/Resume</label>
+                    <select id="cvSelect">
+                        <option value="">Loading CVs...</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="cvUploadGroup" style="display: none;">
+                    <label for="cvUploadInForm">Upload CV/Resume</label>
+                    <input type="file" id="cvUploadInForm" accept=".pdf,.doc,.docx" style="
+                        width: 100%;
+                        padding: 0.75rem 1rem;
+                        border-radius: 0.5rem;
+                        border: 1px solid rgba(55, 65, 81, 1);
+                        background-color: rgba(15, 23, 42, 0.8);
+                        color: rgba(243, 244, 246, 1);
+                        cursor: pointer;
+                    ">
+                    <small style="color: rgba(156, 163, 175, 1); margin-top: 0.5rem; display: block;">
+                        Accepted formats: PDF, DOC, DOCX (Max 10MB)
+                    </small>
+                </div>
+
+                <div class="form-group" id="cvUploadOption" style="display: none; margin-top: -1rem;">
+                    <button type="button" class="btn-secondary" style="width: 100%; padding: 0.5rem;"
+                        onclick="showCVUploadInForm()">
+                        Or upload a new CV
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label for="coverLetter">Cover Letter / Motivation (Optional)</label>
+                    <textarea id="coverLetter"
+                        placeholder="Tell us why you're interested in this position and what makes you a great fit..."></textarea>
+                    <button type="button" class="btn-ai-generate" onclick="generateCoverLetter()">
+                        ✨ Generate with AI
+                    </button>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeApplicationModal()">Cancel</button>
+                    <button type="submit" class="btn-primary" id="submitApplicationBtn">Submit Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="modal-container" style="position: relative;">
+            <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+            <div class="title">Sign In to Apply</div>
+
+            <div class="modal-tabs">
+                <button class="modal-tab active" onclick="switchModalTab('login')">Login</button>
+                <button class="modal-tab" onclick="switchModalTab('signup')">Sign Up</button>
+            </div>
+
+            <form id="modalLoginForm" class="modal-form active">
+                <div class="input-group">
+                    <label for="modalLoginEmail">Email</label>
+                    <input type="email" id="modalLoginEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="modalLoginPassword">Password</label>
+                    <input type="password" id="modalLoginPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="sign-btn">Sign In</button>
+            </form>
+
+            <form id="modalSignupForm" class="modal-form">
+                <div class="input-group">
+                    <label for="modalSignupName">Full Name</label>
+                    <input type="text" id="modalSignupName" placeholder="John Doe" required>
+                </div>
+                <div class="input-group">
+                    <label for="modalSignupEmail">Email</label>
+                    <input type="email" id="modalSignupEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="modalSignupPassword">Password</label>
+                    <input type="password" id="modalSignupPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="sign-btn">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <button class="orion-chat-toggle" id="orionChatToggle" aria-label="Chat with Orion">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
+        </svg>
+    </button>
+    <div class="orion-chat-panel" id="orionChatPanel">
+        <div class="orion-chat-header">
+            <div class="orion-chat-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"
+                    style="width:22px;height:22px">
+                    <rect x="5" y="2" width="14" height="10" rx="2" />
+                    <circle cx="8.5" cy="7" r="1" />
+                    <circle cx="15.5" cy="7" r="1" />
+                    <path d="M9 11h6M5 12v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" />
+                </svg></div>
+            <div>
+                <h3>Orion</h3>
+                <p>Your AI assistant</p>
+            </div>
+            <button class="orion-chat-close" id="orionChatClose">&times;</button>
+        </div>
+        <div class="orion-chat-messages" id="orionChatMessages">
+            <div class="orion-msg bot">Hi! I'm Orion. Ask me anything about job opportunities at SPACE42.</div>
+        </div>
+        <div class="orion-chat-input-area">
+            <input type="text" class="orion-chat-input" id="orionChatInput" placeholder="Ask Orion..."
+                autocomplete="off">
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        sessionStorage.setItem('returningUser', '1');
+
+        // Track pending action after login
+        let pendingAction = null;
+        let uploadedFile = null;
+
+        // Update user badge based on login status
+        function updateUserBadge() {
+            const badge = document.getElementById('userBadge');
+            if (api.token) {
+                badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> My Profile';
+                badge.onclick = () => { window.location.href = 'profile.html'; };
+            } else {
+                badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Sign In';
+                badge.onclick = () => { showLoginModal(); };
+            }
+        }
+        updateUserBadge();
+
+        let currentConversationId = null;
+
+        document.getElementById('orionChatToggle').onclick = () => document.getElementById('orionChatPanel').classList.toggle('open');
+        document.getElementById('orionChatClose').onclick = () => document.getElementById('orionChatPanel').classList.remove('open');
+
+        document.getElementById('orionChatInput').onkeypress = async (e) => {
+            if (e.key === 'Enter') {
+                const input = document.getElementById('orionChatInput');
+                const t = input.value.trim();
+                if (t) {
+                    const msgs = document.getElementById('orionChatMessages');
+                    // Add User Message
+                    const u = document.createElement('div'); u.className = 'orion-msg user'; u.textContent = t; msgs.appendChild(u);
+                    input.value = '';
+                    msgs.scrollTop = msgs.scrollHeight;
+
+                    // Add Loading/Bot Message
+                    if (api.token) {
+                        try {
+                            const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "..."; msgs.appendChild(r);
+                            msgs.scrollTop = msgs.scrollHeight;
+
+                            const resp = await api.chat(t, currentConversationId);
+                            currentConversationId = resp.conversation_id;
+                            r.textContent = resp.response;
+                        } catch (err) {
+                            const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "I'm having trouble connecting right now."; msgs.appendChild(r);
+                        }
+                    } else {
+                        setTimeout(() => {
+                            const r = document.createElement('div');
+                            r.className = 'orion-msg bot';
+                            r.textContent = "Please sign in or upload your CV so I can help you better!";
+                            msgs.appendChild(r);
+                            msgs.scrollTop = msgs.scrollHeight;
+                        }, 600);
+                    }
+                    msgs.scrollTop = msgs.scrollHeight;
+                }
+            }
+        };
+
+        // Login Modal Functions
+        function showLoginModal(action = null) {
+            pendingAction = action;
+            document.getElementById('loginModal').classList.add('show');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('show');
+            pendingAction = null;
+        }
+
+        function switchModalTab(tab) {
+            const tabs = document.querySelectorAll('.modal-tab');
+            const forms = document.querySelectorAll('.modal-form');
+
+            tabs.forEach(t => t.classList.remove('active'));
+            forms.forEach(f => f.classList.remove('active'));
+
+            if (tab === 'login') {
+                tabs[0].classList.add('active');
+                document.getElementById('modalLoginForm').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('modalSignupForm').classList.add('active');
+            }
+        }
+
+        // Modal Login Handler
+        document.getElementById('modalLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('modalLoginEmail').value;
+            const password = document.getElementById('modalLoginPassword').value;
+            const btn = e.target.querySelector('.sign-btn');
+
+            btn.textContent = 'Signing in...';
+            btn.disabled = true;
+
+            try {
+                await api.login(email, password);
+                localStorage.setItem('isLoggedIn', 'true');
+                closeLoginModal();
+                updateUserBadge();
+
+                // Execute pending action if any
+                if (pendingAction) {
+                    if (pendingAction.type === 'upload') {
+                        actuallyUploadFile(pendingAction.file);
+                    } else if (pendingAction.type === 'apply') {
+                        setTimeout(() => applyToJob(pendingAction.jobId, pendingAction.jobTitle), 100);
+                    } else if (pendingAction.type === 'triggerUpload') {
+                        setTimeout(() => document.getElementById('cv-upload').click(), 100);
+                    }
+                }
+            } catch (error) {
+                alert('Login failed: ' + error.message);
+            } finally {
+                btn.textContent = 'Sign In';
+                btn.disabled = false;
+            }
+        });
+
+        // Modal Signup Handler
+        document.getElementById('modalSignupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fullName = document.getElementById('modalSignupName').value;
+            const email = document.getElementById('modalSignupEmail').value;
+            const password = document.getElementById('modalSignupPassword').value;
+            const btn = e.target.querySelector('.sign-btn');
+
+            const nameParts = fullName.trim().split(' ');
+            const firstName = nameParts[0] || '';
+            const lastName = nameParts.slice(1).join(' ') || '';
+
+            btn.textContent = 'Creating account...';
+            btn.disabled = true;
+
+            try {
+                await api.signup(email, password, firstName, lastName);
+                localStorage.setItem('isLoggedIn', 'true');
+                closeLoginModal();
+                updateUserBadge();
+
+                // Execute pending action if any
+                if (pendingAction) {
+                    if (pendingAction.type === 'upload') {
+                        actuallyUploadFile(pendingAction.file);
+                    } else if (pendingAction.type === 'apply') {
+                        setTimeout(() => applyToJob(pendingAction.jobId, pendingAction.jobTitle), 100);
+                    } else if (pendingAction.type === 'triggerUpload') {
+                        setTimeout(() => document.getElementById('cv-upload').click(), 100);
+                    }
+                }
+            } catch (error) {
+                alert('Signup failed: ' + error.message);
+            } finally {
+                btn.textContent = 'Create Account';
+                btn.disabled = false;
+            }
+        });
+
+        let currentCVId = null;
+        let jobMatchData = {}; // Store matching data for each job
+
+        async function loadJobs() {
+            try {
+                const jobs = await api.getJobs();
+                const container = document.querySelector('.jobs-grid');
+                
+                // If user has uploaded CV, get matching data
+                if (uploadedFile && uploadedFile.id) {
+                    currentCVId = uploadedFile.id;
+                    try {
+                        const cv = await api.request(`/cvs/${currentCVId}`, { requireAuth: true });
+                        if (cv.parsing_status === 'completed') {
+                            const matchedData = await api.request(`/cvs/${currentCVId}/matched-roles`, { requireAuth: true });
+                            // Create a map of role_id to match data
+                            matchedData.matched_roles.forEach(match => {
+                                jobMatchData[match.role_id] = match;
+                            });
+                        }
+                    } catch (err) {
+                        console.error('Error loading CV match data:', err);
+                    }
+                }
+                
+                if (!jobs || jobs.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">No jobs found.</p>';
+                } else {
+                    container.innerHTML = jobs.map(job => {
+                        const match = jobMatchData[job.id];
+                        const hasMatch = match !== undefined;
+                        const isEligible = hasMatch && match.is_eligible;
+                        const hasAllRequired = hasMatch && match.has_all_required_skills;
+                        
+                        return `
+                        <div class="job-card" style="${hasMatch ? (isEligible ? 'border-color: rgba(34, 197, 94, 0.4);' : 'border-color: rgba(239, 68, 68, 0.4);') : ''}">
+                            <div class="job-header">
+                                <div class="job-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="6" rx="4" ry="2"/><path d="M4 6v4c0 4 3.5 6 8 6s8-2 8-6V6"/></svg></div>
+                                <div class="job-badge" style="${hasMatch && isEligible ? 'background: rgba(34, 197, 94, 0.2); color: #22c55e;' : hasMatch ? 'background: rgba(239, 68, 68, 0.2); color: #ef4444;' : ''}">
+                                    ${hasMatch ? `${Math.round(match.match_score)}% Match` : (job.work_type || 'Full-time')}
+                                </div>
+                            </div>
+                            <h3 class="job-title">${job.title}</h3>
+                            <p class="job-company">${job.department || 'Space42'}</p>
+                            <div class="job-details">
+                                <div class="job-detail">${job.location || 'Remote'}</div>
+                                <div class="job-detail">${job.salary_max ? (job.currency || '$') + ' ' + job.salary_max : 'Competitive'}</div>
+                            </div>
+                            ${hasMatch ? `
+                                <div style="margin: 1rem 0; padding: 1rem; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                                    ${match.matched_non_negotiable_skills && match.matched_non_negotiable_skills.length > 0 ? `
+                                        <div style="margin-bottom: 0.75rem;">
+                                            <small style="color: #22c55e; font-weight: 600;">✓ Required Skills You Have:</small>
+                                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                                                ${match.matched_non_negotiable_skills.map(s => `<span style="background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.4); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; color: #22c55e;">${s}</span>`).join('')}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    ${match.missing_non_negotiable_skills && match.missing_non_negotiable_skills.length > 0 ? `
+                                        <div style="margin-bottom: 0.75rem;">
+                                            <small style="color: #ef4444; font-weight: 600;">✗ Missing Required Skills:</small>
+                                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                                                ${match.missing_non_negotiable_skills.map(s => `<span style="background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.4); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; color: #ef4444;">${s}</span>`).join('')}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    ${match.matched_preferred_skills && match.matched_preferred_skills.length > 0 ? `
+                                        <div>
+                                            <small style="color: rgba(255,255,255,0.6); font-weight: 500;">+ Preferred Skills:</small>
+                                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                                                ${match.matched_preferred_skills.map(s => `<span style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.4); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; color: #60a5fa;">${s}</span>`).join('')}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    ${!hasAllRequired ? `
+                                        <div style="margin-top: 0.75rem; padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px;">
+                                            <small style="color: #ef4444; font-weight: 600;">⚠️ Cannot apply: Missing required skills</small>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            ` : ''}
+                            <p class="job-description">
+                                ${(job.description || '').substring(0, 150)}...
+                            </p>
+                            <button class="apply-btn" 
+                                onclick="applyToJob('${job.id}', '${escapeHtml(job.title)}')"
+                                ${hasMatch && !hasAllRequired ? 'disabled style="opacity: 0.5; cursor: not-allowed;" title="Missing required skills"' : ''}>
+                                ${hasMatch && !hasAllRequired ? 'Missing Required Skills' : 'Apply Now'}
+                            </button>
+                        </div>
+                    `;
+                    }).join('');
+                }
+            } catch (error) {
+                console.error('Failed to load jobs:', error);
+                document.querySelector('.jobs-grid').innerHTML = '<p style="color:red;text-align:center;grid-column:1/-1">Failed to connect to backend.</p>';
+            }
+        }
+
+        // Load jobs on page load
+        loadJobs();
+
+        function triggerUpload() {
+            if (!api.token) {
+                showLoginModal({ type: 'triggerUpload' });
+                return;
+            }
+            document.getElementById('cv-upload').click();
+        }
+
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Check if logged in
+            if (!api.token) {
+                showLoginModal({ type: 'upload', file: file });
+                return;
+            }
+
+            actuallyUploadFile(file);
+        }
+
+        async function actuallyUploadFile(file) {
+            document.getElementById('file-name').textContent = file.name;
+            document.getElementById('file-info').classList.add('show');
+
+            try {
+                document.getElementById('file-name').textContent = "Uploading...";
+                const response = await api.uploadCV(file, true);
+                uploadedFile = response;
+
+                document.getElementById('file-name').textContent = file.name + " (Processing...)";
+                document.getElementById('upload-section').classList.add('has-file');
+
+                // Poll for parsing completion and then filter jobs
+                await pollAndFilterJobs(response.id, file.name);
+            } catch (error) {
+                console.error(error);
+                alert('Upload failed: ' + error.message);
+                removeFile();
+            }
+        }
+
+        async function pollAndFilterJobs(cvId, fileName) {
+            let attempts = 0;
+            const maxAttempts = 30; // Max 30 seconds
+
+            const poll = async () => {
+                attempts++;
+                try {
+                    // Get CV status
+                    const cv = await api.request(`/cvs/${cvId}`, { requireAuth: true });
+
+                    if (cv.parsing_status === 'completed') {
+                        document.getElementById('file-name').textContent = fileName + " (Analyzed ✓)";
+
+                        // Store CV ID for matching
+                        currentCVId = cvId;
+                        
+                        // Reload jobs with matching data
+                        loadJobs();
+                        alert('CV analyzed! Job listings now show your skill matches and gaps.');
+                        return;
+                    } else if (cv.parsing_status === 'failed') {
+                        document.getElementById('file-name').textContent = fileName + " (Analysis failed)";
+                        alert('CV uploaded but analysis failed. You can still apply to jobs manually.');
+                        return;
+                    }
+
+                    // Still processing
+                    if (attempts < maxAttempts) {
+                        setTimeout(poll, 1000);
+                    } else {
+                        document.getElementById('file-name').textContent = fileName + " (Uploaded)";
+                        alert('CV uploaded! Analysis is taking longer than expected. Jobs will update automatically when ready.');
+                    }
+                } catch (err) {
+                    console.error('Error polling CV status:', err);
+                    document.getElementById('file-name').textContent = fileName + " (Uploaded)";
+                }
+            };
+
+            poll();
+        }
+
+
+        function removeFile() {
+            uploadedFile = null;
+            document.getElementById('cv-upload').value = '';
+            document.getElementById('file-info').classList.remove('show');
+            document.getElementById('upload-section').classList.remove('has-file');
+        }
+
+        let currentJobData = null;
+        let userCVs = [];
+        
+        // Helper function to escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function applyToJob(jobId, jobTitle) {
+            console.log('applyToJob called with:', jobId, jobTitle);
+            
+            // Check if logged in
+            if (!api || !api.token) {
+                console.log('Not logged in, showing login modal');
+                showLoginModal({ type: 'apply', jobId: jobId, jobTitle: jobTitle });
+                return;
+            }
+
+            // Check if user is eligible (if CV is uploaded and analyzed)
+            if (currentCVId && jobMatchData[jobId]) {
+                const match = jobMatchData[jobId];
+                if (!match.has_all_required_skills) {
+                    const missingSkills = match.missing_non_negotiable_skills || [];
+                    alert(`Cannot apply: You are missing the following required skills:\n\n${missingSkills.join(', ')}\n\nPlease update your CV or consider other positions.`);
+                    return;
+                }
+            }
+
+            // Get full job data
+            try {
+                const jobs = await api.getJobs();
+                currentJobData = jobs.find(j => j.id === jobId);
+                if (!currentJobData) {
+                    currentJobData = { id: jobId, title: jobTitle };
+                }
+            } catch (error) {
+                console.error('Error loading job data:', error);
+                currentJobData = { id: jobId, title: jobTitle };
+            }
+
+            // Load CVs
+            try {
+                userCVs = await api.getMyCVs();
+            } catch (error) {
+                console.error('Failed to load CVs:', error);
+                userCVs = [];
+            }
+
+            // Show application form
+            console.log('Showing application modal for:', currentJobData);
+            showApplicationModal();
+        }
+
+        function showApplicationModal() {
+            console.log('showApplicationModal called');
+            const modal = document.getElementById('applicationModal');
+            if (!modal) {
+                console.error('Application modal not found!');
+                alert('Error: Application form not found. Please refresh the page.');
+                return;
+            }
+            const jobPreview = document.getElementById('jobPreview');
+            const cvSelect = document.getElementById('cvSelect');
+            const cvInfoSection = document.getElementById('cvInfoSection');
+
+            // Populate job preview
+            if (currentJobData) {
+                jobPreview.innerHTML = `
+                    <div class="job-preview-title">${currentJobData.title}</div>
+                    <div class="job-preview-details">
+                        ${currentJobData.department ? `<span>${currentJobData.department}</span>` : ''}
+                        ${currentJobData.location ? `<span>📍 ${currentJobData.location}</span>` : ''}
+                        ${currentJobData.work_type ? `<span>${currentJobData.work_type}</span>` : ''}
+                        ${currentJobData.salary_max ? `<span>💰 ${currentJobData.currency || '$'}${currentJobData.salary_max}</span>` : ''}
+                    </div>
+                `;
+            }
+
+            // Populate CV select
+            cvSelect.innerHTML = '';
+            const cvSelectGroup = document.getElementById('cvSelectGroup');
+            const cvUploadGroup = document.getElementById('cvUploadGroup');
+            const cvUploadOption = document.getElementById('cvUploadOption');
+
+            if (userCVs && userCVs.length > 0) {
+                // User has CVs - show select dropdown
+                cvSelectGroup.style.display = 'block';
+                cvUploadGroup.style.display = 'none';
+                cvUploadOption.style.display = 'block';
+
+                // Add "Upload new CV" option
+                const uploadOption = document.createElement('option');
+                uploadOption.value = '';
+                uploadOption.textContent = '-- Or upload a new CV --';
+                cvSelect.appendChild(uploadOption);
+
+                userCVs.forEach(cv => {
+                    const option = document.createElement('option');
+                    option.value = cv.id;
+                    option.textContent = `${cv.file_name}${cv.is_primary ? ' (Primary)' : ''} - ${cv.parsing_status}`;
+                    if (cv.is_primary) {
+                        option.selected = true;
+                    }
+                    cvSelect.appendChild(option);
+                });
+
+                // Show CV info
+                const primaryCV = userCVs.find(cv => cv.is_primary) || userCVs[0];
+                if (primaryCV && primaryCV.parsing_status === 'completed') {
+                    cvInfoSection.innerHTML = `
+                        <div class="cv-info">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                            <div class="cv-info-text">
+                                <div class="cv-info-title">CV Ready</div>
+                                <div class="cv-info-desc">Your CV has been parsed and is ready for application</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    cvInfoSection.innerHTML = `
+                        <div class="cv-info">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12"/>
+                                <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                            <div class="cv-info-text">
+                                <div class="cv-info-title">CV Processing</div>
+                                <div class="cv-info-desc">Your CV is being processed. You can still apply, but matching may be limited.</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            } else {
+                // No CVs - show upload field directly
+                cvSelectGroup.style.display = 'none';
+                cvUploadGroup.style.display = 'block';
+                cvUploadOption.style.display = 'none';
+                cvSelect.innerHTML = '<option value="">No CVs available</option>';
+
+                cvInfoSection.innerHTML = `
+                    <div class="cv-info">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <div class="cv-info-text">
+                            <div class="cv-info-title">Upload Your CV</div>
+                            <div class="cv-info-desc">Upload your CV/Resume to apply for this position. It will be automatically parsed and matched.</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Handle CV select change
+            cvSelect.addEventListener('change', function () {
+                if (this.value === '') {
+                    // User selected "upload new CV"
+                    showCVUploadInForm();
+                } else {
+                    cvUploadGroup.style.display = 'none';
+                }
+            });
+
+            modal.classList.add('show');
+            console.log('Modal shown, classList:', modal.classList.toString());
+        }
+
+        function closeApplicationModal() {
+            document.getElementById('applicationModal').classList.remove('show');
+            document.getElementById('applicationForm').reset();
+            document.getElementById('cvUploadGroup').style.display = 'none';
+            document.getElementById('cvSelectGroup').style.display = 'block';
+            currentJobData = null;
+        }
+
+        function showCVUploadInForm() {
+            document.getElementById('cvSelectGroup').style.display = 'none';
+            document.getElementById('cvUploadGroup').style.display = 'block';
+            document.getElementById('cvUploadOption').style.display = 'none';
+            document.getElementById('cvSelect').value = '';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('applicationModal').addEventListener('click', (e) => {
+            if (e.target.id === 'applicationModal') {
+                closeApplicationModal();
+            }
+        });
+
+        async function generateCoverLetter() {
+            const coverLetterTextarea = document.getElementById('coverLetter');
+            const generateBtn = event.target;
+
+            if (!currentJobData || !userCVs || userCVs.length === 0) {
+                alert('Please select a job and upload a CV first');
+                return;
+            }
+
+            generateBtn.textContent = 'Generating...';
+            generateBtn.disabled = true;
+
+            try {
+                // Get selected CV
+                const cvSelect = document.getElementById('cvSelect');
+                const selectedCVId = cvSelect.value;
+                const selectedCV = userCVs.find(cv => cv.id === selectedCVId);
+
+                if (!selectedCV || selectedCV.parsing_status !== 'completed') {
+                    alert('Please select a CV that has been parsed');
+                    generateBtn.textContent = '✨ Generate with AI';
+                    generateBtn.disabled = false;
+                    return;
+                }
+
+                // Get CV parsed data
+                const cvData = await api.getCV(selectedCVId);
+                const parsedData = cvData.parsed_data;
+
+                if (!parsedData) {
+                    alert('CV data not available. Please wait for parsing to complete.');
+                    generateBtn.textContent = '✨ Generate with AI';
+                    generateBtn.disabled = false;
+                    return;
+                }
+
+                // Call backend to generate cover letter using AI
+                // For now, we'll create a simple one - you can enhance this with an API endpoint
+                const jobDesc = currentJobData.description || '';
+                const skills = parsedData.skills?.technical || [];
+                const experience = parsedData.work_experience || [];
+
+                const generatedText = `Dear Hiring Manager,
+
+I am writing to express my strong interest in the ${currentJobData.title} position at ${currentJobData.department || 'your organization'}.
+
+With ${parsedData.years_of_experience || 'several'} years of experience in ${skills.slice(0, 3).join(', ') || 'the field'}, I am confident that my skills and background align well with your requirements.
+
+${experience.length > 0 ? `In my previous role${experience.length > 1 ? 's' : ''}, I have ${experience.map(exp => `worked as ${exp.role || 'in various positions'}`).join(', ')}.` : ''}
+
+I am particularly drawn to this opportunity because ${jobDesc.substring(0, 100) || 'it aligns with my career goals and interests'}.
+
+I would welcome the opportunity to discuss how my experience and skills can contribute to your team.
+
+Best regards`;
+
+                coverLetterTextarea.value = generatedText;
+                generateBtn.textContent = '✨ Regenerate with AI';
+            } catch (error) {
+                console.error('Error generating cover letter:', error);
+                alert('Failed to generate cover letter. Please write one manually.');
+            } finally {
+                generateBtn.disabled = false;
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('applicationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitApplicationBtn');
+            const cvSelect = document.getElementById('cvSelect');
+            const cvUploadInput = document.getElementById('cvUploadInForm');
+            const coverLetter = document.getElementById('coverLetter').value.trim();
+            let cvId = null;
+
+            // Check if user is uploading a new CV
+            if (cvUploadInput.files && cvUploadInput.files.length > 0) {
+                // Upload CV first
+                submitBtn.textContent = 'Uploading CV...';
+                submitBtn.disabled = true;
+
+                try {
+                    const cvResponse = await api.uploadCV(cvUploadInput.files[0], true);
+                    cvId = cvResponse.id;
+                } catch (error) {
+                    console.error(error);
+                    alert('CV upload failed: ' + error.message);
+                    submitBtn.textContent = 'Submit Application';
+                    submitBtn.disabled = false;
+                    return;
+                }
+            } else if (cvSelect.value) {
+                // Use existing CV
+                cvId = cvSelect.value;
+            } else {
+                alert('Please select an existing CV or upload a new one');
+                return;
+            }
+
+            // Submit application
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+
+            try {
+                await api.createApplication(currentJobData.id, cvId, coverLetter || null);
+                closeApplicationModal();
+                alert(`Application submitted for ${currentJobData.title}! We'll review your CV and get back to you soon.`);
+
+                // Refresh jobs to show updated status
+                loadJobs();
+            } catch (error) {
+                console.error(error);
+                alert('Application failed: ' + error.message);
+            } finally {
+                submitBtn.textContent = 'Submit Application';
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+    <div id="galaxy-background"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: all;"></div>
+    <script src="aurora.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            initAurora('galaxy-background', {
+                colorStops: ["#110066", "#5ca6f5", "#6af185"],
+                blend: 0.5,
+                amplitude: 1.0,
+                speed: 1
+            });
+        });
+    </script>
+</body>
+
+</html>

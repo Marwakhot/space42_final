@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Opportunities - SPACE42</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: white;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #galaxy-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .back-btn:hover {
+            color: white;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.75rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #6b7280 50%, #1f2937 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+        }
+
+        /* Orion AI Panel */
+        .orion-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .orion-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+            opacity: 0.6;
+        }
+
+        .orion-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .orion-avatar {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .orion-info h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .orion-info p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* CV Upload Zone */
+        .cv-upload-zone {
+            border: 2px dashed rgba(59, 130, 246, 0.4);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: rgba(59, 130, 246, 0.02);
+        }
+
+        .cv-upload-zone:hover {
+            border-color: rgba(59, 130, 246, 0.7);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .cv-upload-zone.has-file {
+            border-color: rgba(34, 197, 94, 0.5);
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .cv-upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .cv-upload-text {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .cv-upload-hint {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .cv-upload-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .cv-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .cv-file-info {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            margin-top: 1rem;
+        }
+
+        .cv-file-info.show {
+            display: flex;
+        }
+
+        .cv-file-info #cv-file-name {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .cv-file-info button {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+
+        .cv-file-info button:hover {
+            text-decoration: underline;
+        }
+
+        /* AI Suggestions (shown after CV upload) */
+        .ai-suggestions {
+            display: none;
+            margin-top: 1.5rem;
+        }
+
+        .ai-suggestions.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .suggestions-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .suggestions-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .suggestions-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #60a5fa;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            padding: 0.4rem 0.9rem;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #93c5fd;
+        }
+
+        .skill-tag.recommended {
+            border-color: rgba(34, 197, 94, 0.4);
+            background: rgba(34, 197, 94, 0.1);
+            color: #4ade80;
+        }
+
+        .orion-message-bubble {
+            background: rgba(59, 130, 246, 0.08);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem 1.25rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Jobs Section */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .jobs-filter {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.4);
+            color: white;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border-color: transparent;
+            color: white;
+        }
+
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .job-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .job-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .job-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 50px rgba(59, 130, 246, 0.2);
+        }
+
+        .job-card:hover::before {
+            opacity: 1;
+        }
+
+        .job-card.recommended {
+            border-color: rgba(34, 197, 94, 0.3);
+            box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.2);
+        }
+
+        .job-card.recommended::after {
+            content: 'Best Match';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .job-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .job-icon svg {
+            width: 100%;
+            height: 100%;
+            color: #60a5fa;
+        }
+
+        .job-card:hover .job-icon {
+            transform: scale(1.1);
+        }
+
+        .job-badge {
+            padding: 0.25rem 0.75rem;
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #60a5fa;
+        }
+
+        .job-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .job-company {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .job-details {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .job-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .match-score {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            background: rgba(34, 197, 94, 0.15);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #4ade80;
+            margin-bottom: 0.75rem;
+        }
+
+        .job-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .apply-btn {
+            width: 100%;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .apply-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .user-badge {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .user-badge svg {
+            width: 20px;
+            height: 20px;
+            color: #3b82f6;
+        }
+
+        .user-badge strong {
+            color: #3b82f6;
+        }
+
+        .orion-chat-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orion-chat-toggle svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+
+        .orion-chat-panel {
+            position: fixed;
+            bottom: 90px;
+            right: 24px;
+            width: 380px;
+            max-height: 480px;
+            background: rgba(17, 24, 39, 0.98);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .orion-chat-panel.open {
+            display: flex;
+        }
+
+        .orion-chat-header {
+            padding: 1rem 1.25rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .orion-chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orion-chat-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+
+        .orion-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            max-height: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .orion-msg {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            max-width: 85%;
+        }
+
+        .orion-msg.bot {
+            background: rgba(59, 130, 246, 0.15);
+            border-left: 3px solid #3b82f6;
+            align-self: flex-start;
+        }
+
+        .orion-msg.user {
+            background: rgba(255, 255, 255, 0.08);
+            align-self: flex-end;
+        }
+
+        .orion-chat-input-area {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .orion-chat-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .recommended-section {
+            display: none;
+            margin-bottom: 2.5rem;
+        }
+
+        .recommended-section.show {
+            display: block;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 320px;
+            perspective: 800px;
+        }
+
+        @keyframes autoRun3d {
+            from {
+                transform: perspective(800px) rotateY(-360deg);
+            }
+
+            to {
+                transform: perspective(800px) rotateY(0deg);
+            }
+        }
+
+        @keyframes animateBrightness {
+            10% {
+                filter: brightness(1);
+            }
+
+            50% {
+                filter: brightness(0.85);
+            }
+
+            90% {
+                filter: brightness(1);
+            }
+        }
+
+        .card-3d {
+            position: relative;
+            width: 400px;
+            height: 280px;
+            transform-style: preserve-3d;
+            transform: perspective(800px);
+            animation: autoRun3d 20s linear infinite;
+            will-change: transform;
+        }
+
+        .card-3d .carousel-job-card {
+            position: absolute;
+            width: 220px;
+            min-height: 200px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 1rem;
+            top: 50%;
+            left: 50%;
+            transform-origin: center center;
+            animation: animateBrightness 20s linear infinite;
+            transition-duration: 200ms;
+            will-change: transform, filter;
+            padding: 1rem;
+            overflow: hidden;
+        }
+
+        .card-3d:hover {
+            animation-play-state: paused !important;
+        }
+
+        .card-3d:hover .carousel-job-card {
+            animation-play-state: paused !important;
+        }
+
+        .carousel-job-card .job-title {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .carousel-job-card .job-company {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-job-card .match-score {
+            font-size: 0.75rem;
+            color: #4ade80;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-job-card .job-desc {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        .carousel-job-card .apply-btn {
+            padding: 0.5rem;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .orion-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="galaxy-background"></div>
+
+    <div class="user-badge" id="userBadge"></div>
+
+    <div class="container">
+        <a href="index.html?home=1" class="back-btn">← Back to Orion</a>
+
+        <div class="page-header">
+            <h1 class="page-title">SPACE42</h1>
+            <p class="page-subtitle">Join us on our journey</p>
+        </div>
+
+        <!-- Orion AI Panel -->
+        <section class="orion-panel">
+            <div class="orion-header">
+                <div class="orion-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"
+                        style="width:28px;height:28px">
+                        <rect x="5" y="2" width="14" height="10" rx="2" />
+                        <circle cx="8.5" cy="7" r="1" />
+                        <circle cx="15.5" cy="7" r="1" />
+                        <path d="M9 11h6M5 12v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" />
+                    </svg></div>
+                <div class="orion-info">
+                    <h3>Orion — Your Career Assistant</h3>
+                    <p>Upload your CV and I'll match you with the best roles and suggest skills to strengthen your
+                        application</p>
+                </div>
+            </div>
+
+            <div class="cv-upload-zone" id="cv-upload-zone">
+                <input type="file" id="cv-input" accept=".pdf,.doc,.docx" hidden>
+                <div class="cv-upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5" style="width:48px;height:48px;color:rgba(255,255,255,0.8)">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                    </svg></div>
+                <div class="cv-upload-text">Upload your CV / Resume</div>
+                <div class="cv-upload-hint">PDF, DOC or DOCX — Max 5MB</div>
+                <button type="button" class="cv-upload-btn" id="cv-upload-trigger">Choose File</button>
+                <div class="cv-file-info" id="cv-file-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"
+                        style="width:18px;height:18px;flex-shrink:0">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    <span id="cv-file-name"></span>
+                    <button type="button" id="cv-remove-btn">Remove</button>
+                </div>
+            </div>
+
+            <div class="ai-suggestions" id="ai-suggestions">
+                <div class="orion-message-bubble" id="orion-match-message">
+                    Based on your background, I've identified your top matches and skills that could strengthen your
+                    application.
+                </div>
+                <div class="suggestions-section">
+                    <div class="suggestions-title">Skills to strengthen your application</div>
+                    <div class="skill-tags" id="skill-suggestions"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommended Jobs 3D Carousel (shown when CV uploaded) -->
+        <section class="recommended-section" id="recommended-section">
+            <h2 class="section-title">Recommended for You</h2>
+            <p class="section-subtitle">Your top matches based on your CV</p>
+            <div class="carousel-wrapper">
+                <div class="card-3d" id="card3d"></div>
+            </div>
+        </section>
+
+        <!-- Job Listings -->
+        <section>
+            <h2 class="section-title">Open Positions</h2>
+            <p class="section-subtitle" id="jobs-subtitle">Browse all opportunities at SPACE42</p>
+
+            <div class="jobs-filter">
+                <button class="filter-btn active" data-filter="all">All Roles</button>
+                <button class="filter-btn" data-filter="engineering">Engineering</button>
+                <button class="filter-btn" data-filter="operations">Operations</button>
+                <button class="filter-btn" data-filter="data">Data & Science</button>
+            </div>
+
+            <div class="jobs-grid" id="jobs-grid"></div>
+        </section>
+    </div>
+
+    <button class="orion-chat-toggle" id="orionChatToggle" aria-label="Chat with Orion">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
+        </svg>
+    </button>
+
+    <div class="orion-chat-panel" id="orionChatPanel">
+        <div class="orion-chat-header">
+            <div class="orion-chat-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"
+                    style="width:22px;height:22px">
+                    <rect x="5" y="2" width="14" height="10" rx="2" />
+                    <circle cx="8.5" cy="7" r="1" />
+                    <circle cx="15.5" cy="7" r="1" />
+                    <path d="M9 11h6M5 12v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" />
+                </svg></div>
+            <div>
+                <h3>Orion</h3>
+                <p>Your AI assistant</p>
+            </div>
+            <button class="orion-chat-close" id="orionChatClose" aria-label="Close chat">&times;</button>
+        </div>
+        <div class="orion-chat-messages" id="orionChatMessages">
+            <div class="orion-msg bot">Hi! I'm Orion. Upload your CV and I'll help match you with the best roles. Ask me
+                anything!</div>
+        </div>
+        <div class="orion-chat-input-area">
+            <input type="text" class="orion-chat-input" id="orionChatInput" placeholder="Ask Orion a question..."
+                autocomplete="off">
+        </div>
+    </div>
+
+    <script src="aurora.js"></script>
+    <script src="api.js"></script>
+    <script>
+        sessionStorage.setItem('returningUser', '1');
+
+        const role = localStorage.getItem('userRole') || 'Candidate';
+        const badge = document.getElementById('userBadge');
+        badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Role: <strong>' + role + '</strong>';
+
+        document.getElementById('userBadge').addEventListener('click', () => {
+            window.location.href = 'profile.html';
+        });
+
+        document.getElementById('orionChatToggle').addEventListener('click', () => document.getElementById('orionChatPanel').classList.toggle('open'));
+        document.getElementById('orionChatClose').addEventListener('click', () => document.getElementById('orionChatPanel').classList.remove('open'));
+        document.getElementById('orionChatInput').addEventListener('keypress', (e) => {
+            const t = document.getElementById('orionChatInput').value.trim();
+            if (e.key === 'Enter' && t) {
+                const msgs = document.getElementById('orionChatMessages');
+                const u = document.createElement('div'); u.className = 'orion-msg user'; u.textContent = t; msgs.appendChild(u);
+                document.getElementById('orionChatInput').value = '';
+                setTimeout(() => {
+                    const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "I'll help you find the right role. Upload your CV for personalized job matching!"; msgs.appendChild(r);
+                    msgs.scrollTop = msgs.scrollHeight;
+                }, 600);
+                msgs.scrollTop = msgs.scrollHeight;
+            }
+        });
+
+        // Initialize Aurora Background
+        window.addEventListener('DOMContentLoaded', () => {
+            window.initAurora('galaxy-background', {
+                colorStops: ["#110066", "#5ca6f5", "#6af185"],
+                blend: 0.5,
+                amplitude: 1.0,
+                speed: 1
+            });
+        });
+
+        const defaultIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="6" rx="4" ry="2"/><path d="M4 6v4c0 4 3.5 6 8 6s8-2 8-6V6"/></svg>';
+
+        // Jobs will be loaded from API
+        let jobs = [];
+
+        // Skill suggestions (will be populated from CV parsing in future)
+        let skillSuggestions = {
+            recommended: ['Python', 'Real-time Systems', 'RF Fundamentals'],
+            additional: ['Satellite Communications', 'Systems Engineering', 'Data Analysis']
+        };
+
+        let uploadedFile = null;
+        let currentFilter = 'all';
+
+        // Load jobs from API
+        async function loadJobs() {
+            try {
+                const apiJobs = await api.getJobs();
+                jobs = apiJobs.map(job => ({
+                    id: job.id,
+                    title: job.title,
+                    company: job.department || 'SPACE42',
+                    icon: defaultIcon,
+                    location: job.location || 'Abu Dhabi, UAE',
+                    type: job.work_type || 'Full-time',
+                    level: job.seniority_level || 'Mid-level',
+                    category: (job.department || 'engineering').toLowerCase().includes('data') ? 'data' :
+                        (job.department || '').toLowerCase().includes('operations') ? 'operations' : 'engineering',
+                    description: job.description || '',
+                    recommended: false,
+                    matchScore: null,
+                    skills: job.requirements || []
+                }));
+                renderJobs();
+            } catch (error) {
+                console.error('Failed to load jobs:', error);
+                document.getElementById('jobs-grid').innerHTML = '<p style="color:red;text-align:center;grid-column:1/-1">Failed to load jobs from server.</p>';
+            }
+        }
+
+        // Load jobs on page load
+        loadJobs();
+
+        // CV Upload
+        const cvZone = document.getElementById('cv-upload-zone');
+        const cvInput = document.getElementById('cv-input');
+        const cvTrigger = document.getElementById('cv-upload-trigger');
+        const cvFileInfo = document.getElementById('cv-file-info');
+        const cvFileName = document.getElementById('cv-file-name');
+        const cvRemoveBtn = document.getElementById('cv-remove-btn');
+        const aiSuggestions = document.getElementById('ai-suggestions');
+        const skillSuggestionsEl = document.getElementById('skill-suggestions');
+
+        cvZone.addEventListener('click', (e) => {
+            if (!e.target.closest('#cv-remove-btn')) cvInput.click();
+        });
+
+        cvTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            cvInput.click();
+        });
+
+        cvInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                uploadedFile = file;
+                cvFileName.textContent = file.name;
+                cvFileInfo.classList.add('show');
+                cvZone.classList.add('has-file');
+                aiSuggestions.classList.add('show');
+                document.getElementById('recommended-section').classList.add('show');
+                renderSkillSuggestions();
+                renderRecommendedCarousel();
+                renderJobs();
+                document.getElementById('jobs-subtitle').textContent = 'Orion has identified your best matches below';
+            }
+        });
+
+        cvRemoveBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            uploadedFile = null;
+            cvInput.value = '';
+            cvFileInfo.classList.remove('show');
+            cvZone.classList.remove('has-file');
+            aiSuggestions.classList.remove('show');
+            document.getElementById('recommended-section').classList.remove('show');
+            renderJobs();
+            document.getElementById('jobs-subtitle').textContent = 'Browse all opportunities at SPACE42';
+        });
+
+        function renderRecommendedCarousel() {
+            const recommended = jobs.filter(j => j.recommended);
+            const container = document.getElementById('card3d');
+            const n = Math.max(recommended.length, 1);
+            const angle = 360 / n;
+            const radius = 150;
+
+            container.innerHTML = recommended.map((job, i) => {
+                const rotY = i * angle;
+                const style = `transform: translate(-50%, -50%) rotateY(${rotY}deg) translateZ(${radius}px); animation-delay: -${i * 2}s;`;
+                return `
+                    <div class="carousel-job-card" style="${style}">
+                        <div class="job-title">${job.title}</div>
+                        <div class="job-company">${job.company}</div>
+                        <div class="match-score">${job.matchScore}% match</div>
+                        <div class="job-desc">${job.description.substring(0, 80)}...</div>
+                        <button type="button" class="apply-btn" data-job-id="${job.id}" data-job-title="${job.title}">Apply Now</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderSkillSuggestions() {
+            const allSkills = [...skillSuggestions.recommended, ...skillSuggestions.additional];
+            skillSuggestionsEl.innerHTML = allSkills.map((skill, i) => `
+                <span class="skill-tag ${i < skillSuggestions.recommended.length ? 'recommended' : ''}">${skill}</span>
+            `).join('');
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderJobs();
+            });
+        });
+
+        function renderJobs() {
+            const grid = document.getElementById('jobs-grid');
+            const filtered = currentFilter === 'all'
+                ? jobs
+                : jobs.filter(j => j.category === currentFilter);
+
+            grid.innerHTML = filtered.map(job => `
+                <div class="job-card ${job.recommended && uploadedFile ? 'recommended' : ''}">
+                    <div class="job-header">
+                        <div class="job-icon">${job.icon}</div>
+                        <span class="job-badge">${job.location.includes('Remote') ? 'Remote' : job.location.includes('Dubai') ? 'Dubai' : 'Abu Dhabi'}</span>
+                    </div>
+                    <h3 class="job-title">${job.title}</h3>
+                    <p class="job-company">${job.company}</p>
+                    ${uploadedFile && job.matchScore ? `<div class="match-score">${job.matchScore}% match</div>` : ''}
+                    <div class="job-details">
+                        <span class="job-detail">${job.location}</span>
+                        <span class="job-detail">${job.type}</span>
+                        <span class="job-detail">${job.level}</span>
+                    </div>
+                    <p class="job-description">${job.description}</p>
+                    <button type="button" class="apply-btn" data-job-id="${job.id}" data-job-title="${job.title}">Apply Now</button>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('card3d')?.addEventListener('click', (e) => {
+            const btn = e.target.closest('.apply-btn');
+            if (btn) {
+                e.preventDefault();
+                const id = btn.dataset.jobId, title = btn.dataset.jobTitle;
+                if (uploadedFile) alert(`Application submitted for ${title}! Our team will review your profile shortly.`);
+            }
+        });
+
+        document.getElementById('jobs-grid').addEventListener('click', (e) => {
+            const btn = e.target.closest('.apply-btn');
+            if (!btn) return;
+            const id = btn.dataset.jobId;
+            const title = btn.dataset.jobTitle;
+            if (!uploadedFile) {
+                if (confirm('Upload your CV first for personalized matching. Continue to apply anyway?')) {
+                    window.location.href = `jobs.html?apply=${id}`;
+                }
+            } else {
+                alert(`Application submitted for ${title}! Our team will review your profile shortly.`);
+            }
+        });
+
+    </script>
+    <script src="aurora.js"></script>
+    <script>
+        window.initAurora('galaxy-background', {
+            colorStops: ["#110066", "#5ca6f5", "#6af185"],
+            blend: 0.5,
+            amplitude: 1.0,
+            speed: 1
+        });
+    </script>
+</body>
+
+</html>

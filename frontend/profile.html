@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - SPACE42</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: white;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Galaxy Background */
+        #galaxy-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            color: white;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .profile-info h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .profile-info p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 1rem;
+            color: #60a5fa;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(17, 24, 39, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .details-card {
+            background: rgba(17, 24, 39, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            color: rgba(156, 163, 175, 1);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(17, 24, 39, 1);
+            border: 1px solid rgba(55, 65, 81, 1);
+            border-radius: 0.5rem;
+            color: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: rgba(167, 139, 250, 1);
+        }
+        .input-group input:read-only {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+            margin-left: auto;
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="galaxy-background"></div>
+
+    <div class="container">
+        <a href="index.html?home=1" class="back-btn">← Back to Dashboard</a>
+
+        <div class="profile-header">
+            <div class="profile-avatar" id="avatar">
+                <!-- Initials will go here -->
+            </div>
+            <div class="profile-info">
+                <h1 id="userName">Loading...</h1>
+                <p id="userEmail">...</p>
+                <span class="role-badge" id="userRole">...</span>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Initial Screening</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Interview Scheduled</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Offer/Accepted</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Personal Details</h2>
+        <div class="details-card">
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>First Name</label>
+                    <input type="text" id="firstName" readonly>
+                </div>
+                <div class="input-group">
+                    <label>Last Name</label>
+                    <input type="text" id="lastName" readonly>
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" readonly>
+                </div>
+                <div class="input-group">
+                    <label>Location</label>
+                    <input type="text" id="location" placeholder="Not set" readonly>
+                </div>
+                <div class="input-group">
+                    <label>Years of Experience</label>
+                    <input type="text" id="experience" placeholder="Not set" readonly>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <!-- <button class="btn btn-primary">Save Changes</button> -->
+                <button class="btn btn-danger" onclick="handleLogout()">Log Out</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="aurora.js"></script>
+    <script src="api.js"></script>
+    <script>
+        // Initialize Aurora
+        window.initAurora('galaxy-background', {
+            colorStops: ["#110066", "#5ca6f5", "#6af185"],
+            blend: 0.5,
+            amplitude: 1.0,
+            speed: 1
+        });
+
+        async function loadProfile() {
+            if (!api.token) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                // Fetch latest user data
+                const userData = await api.getCurrentUser();
+
+                if (userData) {
+                    const firstName = userData.first_name || 'User';
+                    const lastName = userData.last_name || '';
+                    const fullName = `${firstName} ${lastName}`.trim();
+                    const initials = (firstName[0] + (lastName[0] || '')).toUpperCase();
+
+                    // Update UI
+                    document.getElementById('avatar').textContent = initials;
+                    document.getElementById('userName').textContent = fullName;
+                    document.getElementById('userEmail').textContent = userData.email;
+                    document.getElementById('userRole').textContent = localStorage.getItem('userRole') || userData.user_type;
+
+                    document.getElementById('firstName').value = firstName;
+                    document.getElementById('lastName').value = lastName;
+                    document.getElementById('email').value = userData.email;
+                    document.getElementById('location').value = userData.location || '';
+                    document.getElementById('experience').value = userData.years_of_experience || '';
+                }
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+
+                // Fallback to local storage if API fails
+                const user = api.user;
+                if (user) {
+                    document.getElementById('userEmail').textContent = user.email;
+                    document.getElementById('userName').textContent = "User";
+                    document.getElementById('avatar').textContent = "U";
+                }
+            }
+        }
+
+        async function handleLogout() {
+            if (confirm('Are you sure you want to log out?')) {
+                await api.logout();
+                window.location.href = 'index.html';
+            }
+        }
+
+        loadProfile();
+    </script>
+</body>
+
+</html>

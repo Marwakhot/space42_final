@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding - SPACE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Background removed for Galaxy */
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .back-btn {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 2rem;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border-color: transparent;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Team Section - Role card style from index */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .team-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .team-card:hover::before {
+            opacity: 1;
+        }
+
+        .team-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.3);
+        }
+
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+            transition: transform 0.3s ease;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-card:hover .avatar {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+        }
+
+        .team-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-role {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-bio {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Office Spaces - Photo Gallery */
+        .map-container {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 1.5rem;
+            padding: 2rem;
+        }
+
+        .office-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .office-photo-card {
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .office-photo-card:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .office-photo-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .office-photo-card .photo-label {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.4);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .timeline-day {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 1.5rem;
+            padding: 2rem;
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .day-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .day-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .activities {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .activity {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 0.75rem;
+            border-left: 3px solid rgba(59, 130, 246, 0.5);
+        }
+
+        .activity-bullet {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.8);
+            flex-shrink: 0;
+            margin-top: 0.5rem;
+        }
+
+        .activity-content h4 {
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-desc {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        /* Checklist */
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .checklist-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checklist-item:hover {
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+
+        .checklist-item.checked .checkbox {
+            background: #22c55e;
+            border-color: #22c55e;
+        }
+
+        .checklist-item.checked .checkbox::after {
+            content: '\2713';
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .checklist-content h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .checklist-desc {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .office-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Orion Chat Popup */
+        .orion-chat-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.5);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orion-chat-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(59, 130, 246, 0.6);
+        }
+
+        .orion-chat-toggle svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+
+        .orion-chat-panel {
+            position: fixed;
+            bottom: 90px;
+            right: 24px;
+            width: 380px;
+            max-height: 480px;
+            background: rgba(17, 24, 39, 0.98);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .orion-chat-panel.open {
+            display: flex;
+            animation: chatSlideUp 0.3s ease;
+        }
+
+        @keyframes chatSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .orion-chat-header {
+            padding: 1rem 1.25rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .orion-chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .orion-chat-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .orion-chat-header p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .orion-chat-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            padding: 0.25rem;
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+
+        .orion-chat-close:hover {
+            color: white;
+        }
+
+        .orion-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 320px;
+        }
+
+        .orion-msg {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-width: 85%;
+        }
+
+        .orion-msg.bot {
+            background: rgba(59, 130, 246, 0.15);
+            border-left: 3px solid #3b82f6;
+            align-self: flex-start;
+        }
+
+        .orion-msg.user {
+            background: rgba(255, 255, 255, 0.08);
+            align-self: flex-end;
+        }
+
+        .orion-chat-input-area {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .orion-chat-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .orion-chat-input:focus {
+            border-color: #3b82f6;
+        }
+
+        .orion-chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .user-badge {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .user-badge svg {
+            width: 20px;
+            height: 20px;
+            color: #3b82f6;
+        }
+
+        .user-badge strong {
+            color: #3b82f6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="user-badge" id="userBadge"></div>
+
+    <div class="container">
+        <a href="index.html?home=1" class="back-btn">← Back to Orion</a>
+
+        <div class="welcome-banner">
+            <h1 class="welcome-title">Welcome to SPACE42</h1>
+            <p class="welcome-subtitle">We're thrilled to have you on our team. Let's get you started on your journey.
+            </p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('colleagues')">Meet Your Team</div>
+            <div class="tab" onclick="switchTab('map')">Office Spaces</div>
+            <div class="tab" onclick="switchTab('schedule')">First Week</div>
+            <div class="tab" onclick="switchTab('checklist')">Checklist</div>
+        </div>
+
+        <!-- Meet Your Colleagues -->
+        <div id="colleagues-content" class="tab-content active">
+            <h2 style="margin-bottom: 2rem; font-size: 2rem;">Meet Your Team</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="avatar">JC</div>
+                    <div class="team-name">Dr. James Carter</div>
+                    <div class="team-role">Team Lead - Satellite Systems</div>
+                    <div class="team-bio">15+ years in aerospace engineering. Your go-to for technical guidance and
+                        mission strategy.</div>
+                </div>
+
+                <div class="team-card">
+                    <div class="avatar">SM</div>
+                    <div class="team-name">Sarah Mitchell</div>
+                    <div class="team-role">Senior Software Engineer</div>
+                    <div class="team-bio">Builds the software that powers our satellites. Code reviewer extraordinaire.
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="avatar">RP</div>
+                    <div class="team-name">Dr. Raj Patel</div>
+                    <div class="team-role">Data Scientist</div>
+                    <div class="team-bio">Turns telemetry into insights. Master of machine learning and predictive
+                        analytics.</div>
+                </div>
+
+                <div class="team-card">
+                    <div class="avatar">LZ</div>
+                    <div class="team-name">Commander Lisa Zhang</div>
+                    <div class="team-role">Mission Operations</div>
+                    <div class="team-bio">Oversees live missions. Former Air Force pilot with a passion for space
+                        exploration.</div>
+                </div>
+
+                <div class="team-card">
+                    <div class="avatar">MJ</div>
+                    <div class="team-name">Marcus Johnson</div>
+                    <div class="team-role">HR Business Partner</div>
+                    <div class="team-bio">Your onboarding buddy. Here to help with any questions about benefits,
+                        culture, or career growth.</div>
+                </div>
+
+                <div class="team-card">
+                    <div class="avatar">ER</div>
+                    <div class="team-name">Elena Rodriguez</div>
+                    <div class="team-role">UX Designer</div>
+                    <div class="team-bio">Designs mission control interfaces. Makes complex systems beautifully simple.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Office Spaces -->
+        <div id="map-content" class="tab-content">
+            <div class="map-container">
+                <h2 style="margin-bottom: 2rem; font-size: 2rem;">Our Office Spaces</h2>
+
+                <div class="office-gallery">
+                    <div class="office-photo-card">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600"
+                            alt="Modern workspace">
+                        <div class="photo-label">Open Workspace</div>
+                    </div>
+                    <div class="office-photo-card">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600"
+                            alt="Team collaboration">
+                        <div class="photo-label">Collaboration Zone</div>
+                    </div>
+                    <div class="office-photo-card">
+                        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600"
+                            alt="Conference room">
+                        <div class="photo-label">Conference Room</div>
+                    </div>
+                    <div class="office-photo-card">
+                        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600" alt="Tech office">
+                        <div class="photo-label">Engineering Bay</div>
+                    </div>
+                    <div class="office-photo-card">
+                        <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?w=600" alt="Break room">
+                        <div class="photo-label">Break Room</div>
+                    </div>
+                    <div class="office-photo-card">
+                        <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600"
+                            alt="Modern office">
+                        <div class="photo-label">Reception & Main Entrance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- First Week Schedule -->
+        <div id="schedule-content" class="tab-content">
+            <h2 style="margin-bottom: 2rem; font-size: 2rem;">Your First Week Journey</h2>
+
+            <div class="timeline">
+                <div class="timeline-day">
+                    <div class="day-header">
+                        <div class="day-number">1</div>
+                        <div class="day-title">Monday - Welcome Day</div>
+                    </div>
+                    <div class="activities">
+                        <div class="activity">
+                            <div class="activity-bullet"></div>
+                            <div class="activity-content">
+                                <h4>Morning: Welcome & Setup</h4>
+                                <div class="activity-time">9:00 AM - 12:00 PM</div>
+                                <div class="activity-desc">Meet your HR buddy, get your badge and equipment, set up your
+                                    workstation.</div>
+                            </div>
+                        </div>
+                        <div class="activity">
+                            <div class="activity-bullet"></div>
+                            <div class="activity-content">
+                                <h4>Lunch: Team Welcome</h4>
+                                <div class="activity-time">12:00 PM - 1:00 PM</div>
+                                <div class="activity-desc">Casual lunch with your immediate team members.</div>
+                            </div>
+                        </div>
+                        <div class="activity">
+                            <div class="activity-bullet"></div>
+                            <div class="activity-content">
+                                <h4>Afternoon: Orientation</h4>
+                                <div class="activity-time">1:00 PM - 5:00 PM</div>
+                                <div class="activity-desc">Company overview, values, policies, and benefits walkthrough.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-day">
+                    <div class="day-header">
+                        <div class="day-number">2</div>
+                        <div class="day-title">Tuesday - Technical Onboarding</div>
+                    </div>
+                    <div class="activities">
+                        <div class="activity">
+                            <div class="activity-bullet"></div>
+                            <div class="activity-content">
+                                <h4>System Access & Tools Training</h4>
+                                <div class="activity-time">9:00 AM - 12:00 PM</div>
+                                <div class="activity-desc">Get access to all systems, learn our tech stack and
+                                    development workflows.</div>
+                            </div>
+                        </div>
+                        <div class="activity">
+                            <div class="activity-bullet"></div>
+                            <div class="activity-content">
+                                <h4>Project Deep Dive</h4>
+                                <div class="activity-time">2:00 PM - 5:00 PM</div>
+                                <div class="activity-desc">Overview of current missions and projects you'll be working
+                                    on.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-day">
+                    <div class="day-header">
+                        <div class="day-number">3</div>
+                        <div class="day-title">Wednesday - Meet the Organization</div>
+                    </div>
+                    <div class="activities">
+                        <div class="activity">
+                            <div class="activity-bullet"></div>
+                            <div class="activity-content">
+                                <h4>Department Introductions</h4>
+                                <div class="activity-time">All Day</div>
+                                <div class="activity-desc">Meet key stakeholders from Mission Control, Engineering, Data
+                                    Science, and Operations.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-day">
+                    <div class="day-header">
+                        <div class="day-number">4-5</div>
+                        <div class="day-title">Thursday & Friday - Hands-On</div>
+                    </div>
+                    <div class="activities">
+                        <div class="activity">
+                            <div class="activity-bullet"></div>
+                            <div class="activity-content">
+                                <h4>First Assignments</h4>
+                                <div class="activity-time">Ongoing</div>
+                                <div class="activity-desc">Start working on your first tasks with guidance from your
+                                    mentor. Shadow team members and participate in daily standups.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checklist -->
+        <div id="checklist-content" class="tab-content">
+            <h2 style="margin-bottom: 2rem; font-size: 2rem;">Pre-Arrival Checklist</h2>
+
+            <div class="checklist">
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <div class="checklist-content">
+                        <h3>Complete Background Check Documents</h3>
+                        <div class="checklist-desc">Submit all required forms via the HR portal by your start date.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <div class="checklist-content">
+                        <h3>Review Benefits Package</h3>
+                        <div class="checklist-desc">Familiarize yourself with health insurance, 401(k), and other
+                            benefits options.</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <div class="checklist-content">
+                        <h3>Set Up Direct Deposit</h3>
+                        <div class="checklist-desc">Add your banking information in the payroll system.</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <div class="checklist-content">
+                        <h3>Review Company Handbook</h3>
+                        <div class="checklist-desc">Read through our policies, culture guide, and code of conduct.</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <div class="checklist-content">
+                        <h3>Prepare Questions</h3>
+                        <div class="checklist-desc">Think about what you'd like to learn during your first week.</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <div class="checklist-content">
+                        <h3>Plan Your Commute</h3>
+                        <div class="checklist-desc">Test your route to the office and identify parking or public transit
+                            options.</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <div class="checklist-content">
+                        <h3>Bring Required Documents</h3>
+                        <div class="checklist-desc">ID, Social Security card, and any other documents listed in your
+                            welcome email.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orion Chat Popup -->
+    <button class="orion-chat-toggle" id="orionChatToggle" aria-label="Chat with Orion">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
+        </svg>
+    </button>
+
+    <div class="orion-chat-panel" id="orionChatPanel">
+        <div class="orion-chat-header">
+            <div class="orion-chat-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"
+                    style="width:22px;height:22px">
+                    <rect x="5" y="2" width="14" height="10" rx="2" />
+                    <circle cx="8.5" cy="7" r="1" />
+                    <circle cx="15.5" cy="7" r="1" />
+                    <path d="M9 11h6M5 12v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" />
+                </svg></div>
+            <div>
+                <h3>Orion</h3>
+                <p>Your AI assistant</p>
+            </div>
+            <button class="orion-chat-close" id="orionChatClose" aria-label="Close chat">&times;</button>
+        </div>
+        <div class="orion-chat-messages" id="orionChatMessages">
+            <div class="orion-msg bot">Hi! I'm Orion, your AI assistant. Ask me anything about onboarding, SPACE42, or
+                your first week.</div>
+        </div>
+        <div class="orion-chat-input-area">
+            <input type="text" class="orion-chat-input" id="orionChatInput" placeholder="Ask Orion a question..."
+                autocomplete="off">
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        sessionStorage.setItem('returningUser', '1');
+
+        // Check Access
+        async function checkAccess() {
+            if (!api.token) {
+                window.location.href = 'jobs.html';
+                return;
+            }
+
+            try {
+                // Check if user has an active onboarding record (is hired)
+                const status = await api.request('/onboarding/status');
+                if (!status || !status.id) {
+                    alert('Access Restricted: Onboarding is only available for hired employees.');
+                    window.location.href = 'jobs.html';
+                    return;
+                }
+
+                // Set Up UI for Hired User
+                setupUI();
+            } catch (error) {
+                console.error('Access check failed:', error);
+                alert('Access Restricted: Only hired employees can view this page.');
+                window.location.href = 'jobs.html';
+            }
+        }
+
+        function setupUI() {
+            const role = 'Employee'; // If they are here, they are an employee
+            const badge = document.getElementById('userBadge');
+            badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> My Profile';
+            badge.onclick = () => { window.location.href = 'profile.html'; };
+        }
+
+        checkAccess();
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById(tabName + '-content').classList.add('active');
+            // Fix: event might not be defined if called programmatically, but here it's inline onclick
+            if (window.event) window.event.target.classList.add('active');
+        }
+
+        function toggleCheck(item) {
+            item.classList.toggle('checked');
+        }
+
+        // Orion Chat
+        const chatToggle = document.getElementById('orionChatToggle');
+        const chatPanel = document.getElementById('orionChatPanel');
+        const chatClose = document.getElementById('orionChatClose');
+        const chatInput = document.getElementById('orionChatInput');
+        const chatMessages = document.getElementById('orionChatMessages');
+
+        const orionResponses = [
+            "Great question! Feel free to reach out to your HR buddy Marcus Johnson for details about benefits and policies.",
+            "Your first day will include welcome setup, team lunch, and orientation. Check the First Week tab for the full schedule.",
+            "Our office spaces include open workspace, collaboration zones, conference rooms, and a break room. See the Office Spaces tab for photos.",
+            "You can track your application status anytime from the main portal. Look for the Track Your Application card.",
+            "SPACE42 is a UAE-based company that creates and operates satellites. We're pushing the boundaries of space technology.",
+            "I'm here to help! Is there anything else you'd like to know about your onboarding or SPACE42?",
+            "For technical setup, you'll get system access and tools training on Day 2. Your team lead can help with specific tools.",
+            "The pre-arrival checklist includes background check documents, benefits review, direct deposit setup, and more. Check the Checklist tab."
+        ];
+
+        let currentConversationId = null;
+
+        function toggleChat() {
+            chatPanel.classList.toggle('open');
+        }
+
+        function addUserMessage(text) {
+            const msg = document.createElement('div');
+            msg.className = 'orion-msg user';
+            msg.textContent = text;
+            chatMessages.appendChild(msg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addBotMessage(text) {
+            const msg = document.createElement('div');
+            msg.className = 'orion-msg bot';
+            msg.textContent = text;
+            chatMessages.appendChild(msg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        chatToggle.addEventListener('click', toggleChat);
+        chatClose.addEventListener('click', toggleChat);
+
+        chatInput.addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter' && chatInput.value.trim()) {
+                const question = chatInput.value.trim();
+                addUserMessage(question);
+                chatInput.value = '';
+
+                // Add loading indicator
+                const loadingMsg = document.createElement('div');
+                loadingMsg.className = 'orion-msg bot';
+                loadingMsg.textContent = '...';
+                chatMessages.appendChild(loadingMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                try {
+                    const resp = await api.onboardingChat(question, currentConversationId);
+                    currentConversationId = resp.conversation_id;
+                    loadingMsg.textContent = resp.response;
+                } catch (error) {
+                    loadingMsg.textContent = "I'm having trouble connecting to the onboarding database.";
+                    console.error(error);
+                }
+            }
+        });
+    </script>
+    <div id="galaxy-background"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: all;"></div>
+    <script src="aurora.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            initAurora('galaxy-background', {
+                colorStops: ["#110066", "#5ca6f5", "#6af185"],
+                blend: 0.5,
+                amplitude: 1.0,
+                speed: 1
+            });
+        });
+    </script>
+
+</body>
+
+</html>

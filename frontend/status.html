@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Status - SPACE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Background removed for Galaxy */
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .back-btn {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header-icon {
+            width: 4rem;
+            height: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-icon svg {
+            width: 100%;
+            height: 100%;
+            color: #60a5fa;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-email {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Status Card */
+        .status-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-card::before {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            top: 10%;
+            right: -10%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2360a5fa' opacity='0.5'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E") no-repeat center;
+            animation: cometPass 15s linear infinite;
+        }
+
+        @keyframes cometPass {
+            0% {
+                right: -10%;
+                top: 10%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                right: 110%;
+                top: 80%;
+                opacity: 0;
+            }
+        }
+
+        .application-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .job-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .job-info p {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .status-in-review {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        /* Timeline - Package Tracking Style */
+        .tracking-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 50px;
+            width: 2px;
+            height: calc(100% + 0.5rem);
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .timeline-item.completed::after {
+            background: linear-gradient(to bottom, #22c55e, rgba(59, 130, 246, 0.2));
+        }
+
+        .timeline-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-icon.completed {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+            animation: completedBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes completedBounce {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .timeline-icon.active {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+            animation: activePulse 2s infinite;
+        }
+
+        @keyframes activePulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+                transform: scale(1);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(59, 130, 246, 1);
+                transform: scale(1.15);
+            }
+        }
+
+        .timeline-icon.active::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.8);
+            animation: sparkle 1.5s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+
+            0%,
+            100% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .timeline-icon.pending {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .timeline-date {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .timeline-detail {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 0.5rem;
+            border-left: 3px solid rgba(59, 130, 246, 0.5);
+        }
+
+        /* Estimated Delivery */
+        .estimated-completion {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .estimated-completion h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #a78bfa;
+        }
+
+        .estimated-date {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.875rem;
+            border-radius: 0.75rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .user-badge {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .user-badge svg {
+            width: 20px;
+            height: 20px;
+            color: #3b82f6;
+        }
+
+        .user-badge strong {
+            color: #3b82f6;
+        }
+
+        .orion-chat-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orion-chat-toggle svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+
+        .orion-chat-panel {
+            position: fixed;
+            bottom: 90px;
+            right: 24px;
+            width: 380px;
+            max-height: 480px;
+            background: rgba(17, 24, 39, 0.98);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .orion-chat-panel.open {
+            display: flex;
+        }
+
+        .orion-chat-header {
+            padding: 1rem 1.25rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .orion-chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orion-chat-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+
+        .orion-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            max-height: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .orion-msg {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            max-width: 85%;
+        }
+
+        .orion-msg.bot {
+            background: rgba(59, 130, 246, 0.15);
+            border-left: 3px solid #3b82f6;
+            align-self: flex-start;
+        }
+
+        .orion-msg.user {
+            background: rgba(255, 255, 255, 0.08);
+            align-self: flex-end;
+        }
+
+        .orion-chat-input-area {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .orion-chat-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        @media (max-width: 768px) {
+            .application-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="user-badge" id="userBadge"></div>
+
+    <div class="container">
+        <a href="index.html?home=1" class="back-btn">← Back to Orion</a>
+
+        <div class="header">
+            <div class="header-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                </svg></div>
+            <h1 class="page-title">Track Your Application</h1>
+            <p class="user-email" id="user-email">Loading...</p>
+        </div>
+
+        <div id="applications-container">
+            <!-- Loading State -->
+            <div class="status-card" style="text-align: center; padding: 4rem;">
+                <div class="loader" style="margin: 0 auto 1rem;"></div>
+                <p>Loading your applications...</p>
+            </div>
+        </div>
+
+        <template id="application-template">
+            <div class="status-card">
+                <div class="application-header">
+                    <div class="job-info">
+                        <h2 class="app-job-title">Job Title</h2>
+                        <p class="app-id">Application ID: #...</p>
+                        <p class="app-date">Submitted: ...</p>
+                    </div>
+                    <div class="status-badge">Status</div>
+                </div>
+                <div class="tracking-timeline">
+                    <!-- Timeline items will be injected here -->
+                </div>
+                <!-- Withdraw Button -->
+                <div
+                    style="text-align: right; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <button class="withdraw-btn" onclick="withdrawApplication(this)"
+                        style="color: #ef4444; background: none; border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s;">Withdraw
+                        Application</button>
+                    <button class="contact-btn" onclick="contactRecruiter()"
+                        style="margin-left: 10px; color: #3b82f6; background: none; border: 1px solid rgba(59, 130, 246, 0.3); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s;">Contact
+                        Recruiter</button>
+                </div>
+            </div>
+        </template>
+
+
+        <button class="orion-chat-toggle" id="orionChatToggle" aria-label="Chat with Orion">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
+            </svg>
+        </button>
+        <div class="orion-chat-panel" id="orionChatPanel">
+            <div class="orion-chat-header">
+                <div class="orion-chat-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"
+                        style="width:22px;height:22px">
+                        <rect x="5" y="2" width="14" height="10" rx="2" />
+                        <circle cx="8.5" cy="7" r="1" />
+                        <circle cx="15.5" cy="7" r="1" />
+                        <path d="M9 11h6M5 12v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" />
+                    </svg></div>
+                <div>
+                    <h3>Orion</h3>
+                    <p>Your AI assistant</p>
+                </div>
+                <button class="orion-chat-close" id="orionChatClose">&times;</button>
+            </div>
+            <div class="orion-chat-messages" id="orionChatMessages">
+                <div class="orion-msg bot">Hi! I'm Orion. Ask me anything about your application status.</div>
+            </div>
+            <div class="orion-chat-input-area">
+                <input type="text" class="orion-chat-input" id="orionChatInput" placeholder="Ask Orion..."
+                    autocomplete="off">
+            </div>
+        </div>
+
+        <script src="api.js"></script>
+        <script>
+            sessionStorage.setItem('returningUser', '1');
+
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                window.location.href = 'jobs.html'; // Redirect to jobs where login lives
+            }
+
+            let currentConversationId = null;
+
+            const role = localStorage.getItem('userRole') || 'Candidate';
+            const badge = document.getElementById('userBadge');
+            if (badge) {
+                badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Role: <strong>' + role + '</strong>';
+                badge.onclick = () => { window.location.href = 'profile.html'; };
+            }
+
+            document.getElementById('orionChatToggle').onclick = () => document.getElementById('orionChatPanel').classList.toggle('open');
+            document.getElementById('orionChatClose').onclick = () => document.getElementById('orionChatPanel').classList.remove('open');
+
+            document.getElementById('orionChatInput').onkeypress = async (e) => {
+                if (e.key === 'Enter') {
+                    const input = document.getElementById('orionChatInput');
+                    const t = input.value.trim();
+                    if (t) {
+                        const msgs = document.getElementById('orionChatMessages');
+                        // Add User Message
+                        const u = document.createElement('div'); u.className = 'orion-msg user'; u.textContent = t; msgs.appendChild(u);
+                        input.value = '';
+                        msgs.scrollTop = msgs.scrollHeight;
+
+                        // Add Loading/Bot Message
+                        try {
+                            const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "..."; msgs.appendChild(r);
+                            msgs.scrollTop = msgs.scrollHeight;
+
+                            const resp = await api.chat(t, currentConversationId);
+                            currentConversationId = resp.conversation_id;
+                            r.textContent = resp.response;
+                        } catch (err) {
+                            const r = document.createElement('div'); r.className = 'orion-msg bot'; r.textContent = "I'm having trouble connecting right now."; msgs.appendChild(r);
+                        }
+                        msgs.scrollTop = msgs.scrollHeight;
+                    }
+                }
+            };
+
+            // Display user email
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                document.getElementById('user-email').textContent = userEmail;
+            }
+
+            async function withdrawApplication(appId) {
+                if (confirm('Are you sure you want to withdraw your application? This cannot be undone.')) {
+                    const btn = document.querySelector(`button[onclick="withdrawApplication('${appId}')"]`);
+                    if (btn) btn.textContent = "Withdrawing...";
+
+                    try {
+                        await api.withdrawApplication(appId);
+                        alert('Application withdrawn.');
+                        loadApplications(); // Refresh list
+                    } catch (error) {
+                        alert('Failed to withdraw: ' + error.message);
+                        if (btn) btn.textContent = "Withdraw Application";
+                    }
+                }
+            }
+
+            function contactRecruiter() {
+                alert('A message has been sent to the hiring team. They will contact you via email.');
+            }
+
+            async function loadApplications() {
+                const container = document.getElementById('applications-container');
+                const template = document.getElementById('application-template');
+
+                try {
+                    const applications = await api.getMyApplications();
+
+                    if (!applications || applications.length === 0) {
+                        container.innerHTML = `
+                            <div class="status-card" style="text-align: center; padding: 4rem;">
+                                <div style="font-size: 3rem; margin-bottom: 1rem;">📝</div>
+                                <h2>No Applications Yet</h2>
+                                <p style="color: rgba(255,255,255,0.6); margin-bottom: 2rem;">You haven't applied to any roles yet.</p>
+                                <a href="jobs.html" style="background: #3b82f6; color: white; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 2rem;">Explore Jobs</a>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    container.innerHTML = ''; // Clear loading state
+
+                    applications.forEach(app => {
+                        const clone = template.content.cloneNode(true);
+
+                        // Basic Info
+                        clone.querySelector('.app-job-title').textContent = app.job_title || 'Unknown Role';
+                        clone.querySelector('.app-id').textContent = `Application ID: #${app.id.substring(0, 8).toUpperCase()}`;
+                        clone.querySelector('.app-date').textContent = `Submitted: ${new Date(app.created_at).toLocaleDateString()}`;
+
+                        // Status Badge
+                        const badge = clone.querySelector('.status-badge');
+                        badge.textContent = app.status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                        badge.className = `status-badge status-${app.status.toLowerCase().replace(/_/g, '-')}`;
+
+                        // Withdraw Button
+                        const withdrawBtn = clone.querySelector('.withdraw-btn');
+                        withdrawBtn.setAttribute('onclick', `withdrawApplication('${app.id}')`);
+                        if (['rejected', 'withdrawn', 'hired', 'offered'].includes(app.status.toLowerCase())) {
+                            withdrawBtn.style.display = 'none';
+                        }
+
+                        // Timeline Logic
+                        const timelineContainer = clone.querySelector('.tracking-timeline');
+                        const statusSteps = [
+                            { key: 'applied', label: 'Application Submitted' },
+                            { key: 'under_ai_review', label: 'AI Screening' },
+                            { key: 'interview_scheduled', label: 'Interview Scheduled' },
+                            { key: 'offered', label: 'Final Offer' }
+                        ];
+
+                        // Find current index
+                        const currentStatus = app.status;
+                        let currentIdx = -1;
+
+                        // Map status to step index
+                        if (currentStatus === 'applied') currentIdx = 0;
+                        else if (currentStatus === 'under_ai_review' || currentStatus === 'shortlisted') currentIdx = 1;
+                        else if (currentStatus.includes('interview')) currentIdx = 2;
+                        else if (currentStatus === 'offered' || currentStatus === 'hired') currentIdx = 3;
+                        else if (currentStatus === 'rejected') currentIdx = -2; // Special case
+
+                        statusSteps.forEach((step, idx) => {
+                            const item = document.createElement('div');
+                            let state = 'pending';
+                            let icon = '○';
+                            let dateText = 'Pending';
+
+                            if (currentIdx === -2) {
+                                // Rejected
+                                if (idx === 0) { state = 'completed'; icon = '✓'; dateText = 'Completed'; }
+                                else { state = 'pending'; }
+                            } else {
+                                if (idx < currentIdx) { state = 'completed'; icon = '✓'; dateText = 'Completed'; }
+                                else if (idx === currentIdx) { state = 'active'; icon = '●'; dateText = 'In Progress'; }
+                            }
+
+                            item.className = `timeline-item ${state}`;
+                            item.innerHTML = `
+                                <div class="timeline-icon ${state}">${icon}</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">${step.label}</div>
+                                    <div class="timeline-date">${dateText}</div>
+                                </div>
+                            `;
+                            timelineContainer.appendChild(item);
+                        });
+
+                        container.appendChild(clone);
+                    });
+
+                } catch (error) {
+                    console.error("Error fetching apps:", error);
+                    container.innerHTML = '<p style="text-align:center; color: #ef4444;">Failed to load applications. Please try again later.</p>';
+                }
+            }
+
+            // Initial Load
+            loadApplications();
+        </script>
+        <div id="galaxy-background"
+            style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: all;"></div>
+        <script src="aurora.js"></script>
+        <script>
+            window.addEventListener('load', () => {
+                initAurora('galaxy-background', {
+                    colorStops: ["#110066", "#5ca6f5", "#6af185"],
+                    blend: 0.5,
+                    amplitude: 1.0,
+                    speed: 1
+                });
+            });
+        </script>
+</body>
+
+</html>
