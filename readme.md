@@ -1,6 +1,6 @@
 # SPACE42 HR Agent 🚀
 
-An AI-powered HR management system for SPACE42's recruitment and onboarding processes.
+An AI-powered HR management system for SPACE42's recruitment, hiring, and employee onboarding processes.
 
 ---
 
@@ -19,12 +19,21 @@ An AI-powered HR management system for SPACE42's recruitment and onboarding proc
 - **Interview Scheduling** — Schedule and manage interviews with email notifications
 - **Talent Orbit** — View rejected candidates for future opportunities
 
+### Employee Onboarding
+- **Guided Onboarding Checklists** — Role-specific task lists for new hires
+- **AI Onboarding Assistant** — Orion chatbot answers policy & process questions
+- **Document Management** — Upload and track required onboarding documents
+- **Team Directory** — New hires can explore team members and org structure
+- **Progress Tracking** — HR monitors onboarding completion across all new hires
+- **Department-Specific Templates** — Customized onboarding flows per department
+
 ### AI-Powered
 - **CV Parsing** — Automatic skill extraction using Groq LLM
 - **Semantic Matching** — FAISS vector search for job-candidate matching
 - **Dynamic Interviews** — AI generates follow-up questions based on responses
 - **Personalized Emails** — AI-generated feedback in rejection/offer emails
 - **Voice Mode** — Speech recognition & text-to-speech in assessments
+- **RAG-Powered FAQ** — AI answers questions using company knowledge base
 
 ---
 
@@ -100,6 +109,7 @@ npx serve -p 3000
 | Candidate Portal | http://localhost:3000/index.html |
 | Jobs | http://localhost:3000/jobs.html |
 | HR Portal | http://localhost:3000/hr-portal.html |
+| Onboarding | http://localhost:3000/onboarding.html |
 | API Docs | http://localhost:8000/docs |
 
 ---
